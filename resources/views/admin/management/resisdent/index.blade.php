@@ -5,74 +5,49 @@
 
 @section('content')
 <div class="container-fluid admin-page">
-    @isset($selectedResident)
-        <div class="card border-0 shadow-sm rounded-3 mb-3">
-            <div class="card-body p-3">
-                <div class="d-flex align-items-start justify-content-between gap-3">
-                    <div>
-                        <p class="small text-uppercase text-muted fw-semibold mb-1">Resident Profile</p>
-                        <h1 class="h5 mb-1">{{ $selectedResident->full_name }}</h1>
-                        <p class="text-muted small mb-0">
-                            {{ $selectedResident->home_address ?? 'No address saved' }}
-                            @if ($selectedResident->purok)
-                                &middot; {{ $selectedResident->purok->name }}
-                            @endif
-                        </p>
-                    </div>
-                    <a href="{{ route('admin.residents.index') }}" class="btn btn-sm btn-outline-secondary">
-                        <i class="fas fa-xmark fa-fw me-1"></i> Close
-                    </a>
-                </div>
-
-                <div class="row g-3 mt-2">
-                    <div class="col-12 col-md-3">
-                        <div class="small text-muted">Gender</div>
-                        <div class="fw-semibold">{{ $selectedResident->gender }}</div>
-                    </div>
-                    <div class="col-12 col-md-3">
-                        <div class="small text-muted">Age</div>
-                        <div class="fw-semibold">{{ $selectedResident->age }}</div>
-                    </div>
-                    <div class="col-12 col-md-3">
-                        <div class="small text-muted">Mobile</div>
-                        <div class="fw-semibold">{{ $selectedResident->mobile_number ?? 'N/A' }}</div>
-                    </div>
-                    <div class="col-12 col-md-3">
-                        <div class="small text-muted">Account</div>
-                        <div class="fw-semibold">{{ $selectedResident->user?->username ?? 'No login account' }}</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    @endisset
-
-    <div class="card border-0 shadow-sm rounded-3 p-3">
-        <div class="table-panel">
+    <div class="resident-master-panel">
+        <div class="table-panel resident-table-panel">
             <div class="table-panel-toolbar">
                 <h1 class="table-panel-title">
                     <i class="fas fa-users fa-fw text-primary"></i>
-                    Residents List
+                    Resident Records
                 </h1>
 
-                <form method="GET" action="{{ route('admin.residents.index') }}" class="table-panel-actions">
-                    <div class="input-group input-group-sm table-search">
-                        <span class="input-group-text bg-white"><i class="fas fa-search fa-fw text-muted"></i></span>
-                        <input type="search" name="search" value="{{ $search ?? '' }}" class="form-control" placeholder="Search by name, contact, or email">
+                <form method="GET" action="{{ route('admin.residents.index') }}"
+                    class="d-flex align-items-center gap-1 ms-auto">
+
+                    <div class="input-group" style="width:200px;">
+                        <span class="input-group-text bg-white border-end-0 px-2">
+                            <i class="fas fa-search text-muted" style="font-size:.75rem;"></i>
+                        </span>
+                        <input type="search" name="search"
+                            value="{{ $search ?? '' }}"
+                            class="form-control border-start-0 ps-0"
+                            placeholder="Search resident"
+                            style="font-size:.82rem;">
                     </div>
-                    <a href="{{ route('admin.residents.index') }}" class="btn btn-sm btn-outline-secondary">
-                        <i class="fas fa-rotate-left fa-fw me-1"></i> Reset
+
+                    <a href="{{ route('admin.residents.index') }}"
+                    class="btn btn-outline-secondary table-icon-btn"
+                    title="Reset" aria-label="Reset search">
+                        <i class="fas fa-rotate-left fa-fw"></i>
+                    </a>
+
+                    <a href="{{ route('admin.residents.create') }}"
+                    class="btn btn-primary table-icon-btn"
+                    title="Register resident" aria-label="Register resident">
+                        <i class="fas fa-user-plus fa-fw"></i>
                     </a>
                 </form>
             </div>
 
             <div class="table-responsive">
-                <table class="table table-sm table-hover table-bordered align-middle admin-table mb-0">
+                <table class="table table-sm table-hover table-bordered align-middle admin-table resident-master-table mb-0">
                     <thead>
                         <tr>
-                            <th>ID Code</th>
-                            <th>Resident Name</th>
-                            <th>Address</th>
-                            <th>Contact</th>
+                            <th>Given Name</th>
+                            <th class="text-center">Purok</th>
+                            <th>Home Address</th>
                             <th>Status</th>
                             <th class="text-center">Actions</th>
                         </tr>
@@ -80,27 +55,28 @@
                     <tbody>
                         @forelse ($residents as $resident)
                             <tr>
-                                <td><span class="table-code">RES-{{ str_pad($resident->id, 4, '0', STR_PAD_LEFT) }}</span></td>
-                                <td>
-                                    <div class="table-primary-text">{{ $resident->full_name }}</div>
-                                    <div class="entity-subtitle">{{ $resident->gender }} &middot; {{ $resident->age }} years old</div>
+                                <td class="resident-name-cell">{{ $resident->full_name }}</td>
+                                <td class="text-center">
+                                    <span class="purok-swatch" title="{{ $resident->purok->name ?? 'Unassigned' }}"></span>
                                 </td>
+                                <td class="resident-address-cell">{{ $resident->home_address ?? 'No address saved' }}</td>
                                 <td>
-                                    <div class="table-muted-text">{{ $resident->home_address ?? 'No address saved' }}</div>
-                                    <div class="entity-subtitle">{{ $resident->purok->name ?? 'Unassigned' }}</div>
-                                </td>
-                                <td>
-                                    <div class="table-primary-text">{{ $resident->mobile_number ?? 'No mobile' }}</div>
-                                    <div class="entity-subtitle">{{ $resident->email ?? 'No email' }}</div>
-                                </td>
-                                <td>
-                                    <span class="badge rounded-pill {{ $resident->verified_at ? 'text-bg-success' : 'text-bg-warning' }}">
-                                        {{ $resident->verified_at ? 'Verified' : 'Pending' }}
+                                    <span class="resident-status {{ $resident->verified_at ? 'resident-status--alive' : 'resident-status--pending' }}">
+                                        <i class="fas {{ $resident->verified_at ? 'fa-gem' : 'fa-clock' }} fa-fw"></i>
+                                        {{ $resident->verified_at ? $resident->health_status : 'Pending' }}
                                     </span>
                                 </td>
                                 <td class="text-center">
                                     <div class="table-actions">
-                                        <a href="{{ route('admin.residents.show', $resident) }}" class="btn btn-sm btn-outline-primary table-icon-btn" title="View resident">
+                                        @unless ($resident->verified_at)
+                                            <form method="POST" action="{{ route('admin.residents.verify', $resident) }}" class="m-0">
+                                                @csrf
+                                                <button type="submit" class="btn btn-sm btn-outline-primary table-icon-btn" title="Accept registration" aria-label="Accept registration">
+                                                    <i class="fas fa-check fa-fw"></i>
+                                                </button>
+                                            </form>
+                                        @endunless
+                                        <a href="{{ route('admin.residents.show', $resident) }}" class="btn btn-sm btn-outline-primary table-icon-btn" title="View resident" aria-label="View resident">
                                             <i class="fas fa-eye fa-fw"></i>
                                         </a>
                                     </div>
@@ -108,7 +84,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="6">
+                                <td colspan="5">
                                     <div class="empty-table-state">
                                         <i class="fas fa-folder-open"></i>
                                         No resident records found.

@@ -10,7 +10,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     {{-- Font Awesome --}}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="{{ asset('css/admin.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/admin.css') }}?v={{ filemtime(public_path('css/admin.css')) }}">
     {{-- Page-specific styles --}}
     @stack('styles')
 </head>
@@ -40,33 +40,30 @@
                         id="userDropdown"
                         data-bs-toggle="dropdown"
                         aria-expanded="false">
+                    <div class="tu-avatar">
+                        {{ strtoupper(substr(auth()->user()->username, 0, 1)) }}
+                    </div>
                     <div class="tu-text">
                         <span class="tu-name">{{ auth()->user()->username }}</span>
                         {{-- role replaces usertype --}}
                         <span class="tu-role">{{ ucfirst(auth()->user()->role) }}</span>
                     </div>
-                    <div class="tu-avatar">
-                        {{ strtoupper(substr(auth()->user()->username, 0, 1)) }}
-                    </div>
                 </button>
 
                 <ul class="dropdown-menu dropdown-menu-end tu-dropdown" aria-labelledby="userDropdown">
                     <li>
-                        <div class="tu-dd-row px-3 py-2">
-                            <div class="tu-dd-avatar">
-                                {{ strtoupper(substr(auth()->user()->username, 0, 1)) }}
-                            </div>
+                        <div class="tu-dd-row">
                             <div>
                                 <div class="tu-dd-name fw-semibold">{{ auth()->user()->name }}</div>
-                                <div class="tu-dd-role text-muted small">{{ ucfirst(auth()->user()->role) }}</div>
+                                <div class="tu-dd-role">{{ ucfirst(auth()->user()->role) }}</div>
                             </div>
                         </div>
                     </li>
-                    <li><hr class="dropdown-divider m-0"></li>
+                    <li><hr class="dropdown-divider"></li>
                     <li>
                         <form method="POST" action="{{ route('logout') }}" class="m-0">
                             @csrf
-                            <button type="submit" class="dropdown-item text-danger">
+                            <button type="submit" class="dropdown-item tu-logout">
                                 <i class="fas fa-sign-out-alt me-2"></i> Sign Out
                             </button>
                         </form>

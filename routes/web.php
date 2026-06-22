@@ -29,7 +29,8 @@ Route::middleware('auth')->group(function () {
         ->name('admin.')
         ->group(function () {
             Route::get('/dashboard', DashboardController::class)->name('dashboard');
-            Route::resource('residents', ResidentController::class)->only(['index', 'show']);
+            Route::post('/residents/{resident}/verify', [ResidentController::class, 'verify'])->name('residents.verify');
+            Route::resource('residents', ResidentController::class)->only(['index', 'create', 'store', 'show']);
             Route::get('/accounts', [AccountController::class, 'index'])->name('accounts.index');
         });
 });

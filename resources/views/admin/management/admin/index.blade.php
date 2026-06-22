@@ -18,8 +18,8 @@
                         <span class="input-group-text bg-white"><i class="fas fa-search fa-fw text-muted"></i></span>
                         <input type="search" name="search" value="{{ $search ?? '' }}" class="form-control" placeholder="Search by name, username, or role">
                     </div>
-                    <a href="{{ route('admin.accounts.index') }}" class="btn btn-sm btn-outline-secondary">
-                        <i class="fas fa-rotate-left fa-fw me-1"></i> Reset
+                    <a href="{{ route('admin.accounts.index') }}" class="btn btn-sm btn-outline-secondary table-icon-btn" title="Reset search" aria-label="Reset search">
+                        <i class="fas fa-rotate-left fa-fw"></i>
                     </a>
                 </form>
             </div>
