@@ -83,6 +83,17 @@
                 </button>
             </form>
 
+             {{-- ── DIVIDER + REGISTER LINK ── --}}
+            <div class="d-flex align-items-center gap-2 my-3">
+                <hr class="flex-grow-1 m-0">
+                <span class="text-muted small">or</span>
+                <hr class="flex-grow-1 m-0">
+            </div>
+
+            <a href="{{ route('register') }}" class="btn btn-outline-primary w-100">
+                Register as Resident
+            </a>
+            
             <div class="text-center mt-4">
                 <p class="text-muted small mb-0">Use your assigned username/email and password.</p>
             </div>
