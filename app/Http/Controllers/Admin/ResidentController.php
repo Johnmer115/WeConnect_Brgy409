@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Purok;
 use App\Models\Resident;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ResidentController extends Controller
 {
@@ -34,11 +35,87 @@ class ResidentController extends Controller
     public function create()
     {
         return view('admin.management.resisdent.create', [
-            'puroks' => Purok::orderBy('name')->get(),
+            'resident' => new Resident(),
+            'puroks' => $this->barangayPuroks(),
         ]);
     }
 
     public function store(Request $request)
+    {
+        $validated = $this->validatedResident($request);
+
+        $validated['verified_at'] = now();
+        $validated['verified_by'] = $request->user()->id;
+
+        $resident = Resident::create($validated);
+
+        return redirect()
+            ->route('admin.residents.show', $resident)
+            ->with('success', 'Resident registered successfully.');
+    }
+
+    public function show(Resident $resident)
+    {
+        return view('admin.management.resisdent.show', [
+            'resident' => $resident->load(['purok', 'user']),
+        ]);
+    }
+
+    public function edit(Resident $resident)
+    {
+        return view('admin.management.resisdent.edit', [
+            'resident' => $resident,
+            'puroks' => $this->barangayPuroks(),
+        ]);
+    }
+
+    public function update(Request $request, Resident $resident)
+    {
+        $resident->update($this->validatedResident($request));
+
+        return redirect()
+            ->route('admin.residents.show', $resident)
+            ->with('success', 'Resident updated successfully.');
+    }
+
+    public function destroy(Resident $resident)
+    {
+        DB::transaction(function () use ($resident) {
+            if ($resident->user) {
+                $resident->user->delete();
+            }
+
+            $resident->delete();
+        });
+
+        return redirect()
+            ->route('admin.residents.index')
+            ->with('success', 'Resident deleted successfully.');
+    }
+
+    public function verify(Request $request, Resident $resident)
+    {
+        if (! $resident->verified_at) {
+            $resident->forceFill([
+                'verified_at' => now(),
+                'verified_by' => $request->user()->id,
+            ])->save();
+        }
+
+        return back()->with('success', 'Resident registration accepted.');
+    }
+
+    private function barangayPuroks()
+    {
+        $names = ['Sunflower', 'Rosal', 'Gumamela', 'Sampaguita', 'Ilang-Ilang'];
+
+        return Purok::whereIn('name', $names)
+            ->get()
+            ->sortBy(fn ($purok) => array_search($purok->name, $names, true))
+            ->values();
+    }
+
+    private function validatedResident(Request $request): array
     {
         $validated = $request->validate([
             'last_name' => ['required', 'string', 'max:255'],
@@ -70,32 +147,6 @@ class ResidentController extends Controller
             $validated['date_deceased'] = null;
         }
 
-        $validated['verified_at'] = now();
-        $validated['verified_by'] = $request->user()->id;
-
-        $resident = Resident::create($validated);
-
-        return redirect()
-            ->route('admin.residents.show', $resident)
-            ->with('success', 'Resident registered successfully.');
-    }
-
-    public function show(Resident $resident)
-    {
-        return view('admin.management.resisdent.show', [
-            'resident' => $resident->load(['purok', 'user']),
-        ]);
-    }
-
-    public function verify(Request $request, Resident $resident)
-    {
-        if (! $resident->verified_at) {
-            $resident->forceFill([
-                'verified_at' => now(),
-                'verified_by' => $request->user()->id,
-            ])->save();
-        }
-
-        return back()->with('success', 'Resident registration accepted.');
+        return $validated;
     }
 }

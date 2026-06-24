@@ -108,6 +108,20 @@
             sidebar.classList.toggle('sidebar--collapsed');
             mainContent.classList.toggle('main--expanded');
         });
+
+        document.querySelectorAll('.sb-subtoggle').forEach(function (button) {
+            button.addEventListener('click', function () {
+                const submenu = document.getElementById(button.dataset.target);
+
+                if (!submenu) {
+                    return;
+                }
+
+                const expanded = button.getAttribute('aria-expanded') === 'true';
+                button.setAttribute('aria-expanded', expanded ? 'false' : 'true');
+                submenu.hidden = expanded;
+            });
+        });
     </script>
 
     {{-- Page-specific scripts --}}

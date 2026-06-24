@@ -16,7 +16,7 @@ class RegisterController extends Controller
 {
     public function showForm()
     {
-        $puroks = Purok::orderBy('name')->get();
+        $puroks = $this->registrationPuroks();
         return view('loginpage.regisform', compact('puroks'));
     }
 
@@ -93,6 +93,18 @@ class RegisterController extends Controller
         // 3. Log them in automatically
         Auth::login($user);
 
-        return redirect()->route('home')->with('success', 'Registration successful. Welcome to WeConnect!');
+        return redirect()
+            ->route('home')
+            ->with('success', 'Registration successful. Your account is pending admin approval.');
+    }
+
+    private function registrationPuroks()
+    {
+        $names = ['Sunflower', 'Rosal', 'Gumamela', 'Sampaguita', 'Ilang-Ilang'];
+
+        return Purok::whereIn('name', $names)
+            ->get()
+            ->sortBy(fn ($purok) => array_search($purok->name, $names, true))
+            ->values();
     }
 }

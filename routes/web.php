@@ -2,10 +2,15 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AccountController;
+use App\Http\Controllers\Admin\AnnouncementController as AdminAnnouncementController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\ReportController as AdminReportController;
 use App\Http\Controllers\Admin\ResidentController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Resident\AnnouncementController as ResidentAnnouncementController;
+use App\Http\Controllers\Resident\HomeController as ResidentHomeController;
+use App\Http\Controllers\Resident\ReportController as ResidentReportController;
 
 Route::redirect('/', '/login');
 
@@ -21,7 +26,11 @@ Route::middleware('auth')->group(function () {
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
     // Resident-only
-    Route::get('/home', fn () => view('home'))->middleware('role:resident')->name('home');
+    Route::get('/home', ResidentHomeController::class)->middleware('role:resident')->name('home');
+    Route::middleware(['role:resident', 'resident.approved'])->group(function () {
+        Route::get('/announcements', ResidentAnnouncementController::class)->name('resident.announcements');
+        Route::get('/reports', ResidentReportController::class)->name('resident.reports');
+    });
 
     // Admin-only (any of these three roles)
     Route::middleware('role:secretary,chairman,kagawad')
@@ -29,8 +38,15 @@ Route::middleware('auth')->group(function () {
         ->name('admin.')
         ->group(function () {
             Route::get('/dashboard', DashboardController::class)->name('dashboard');
-            Route::post('/residents/{resident}/verify', [ResidentController::class, 'verify'])->name('residents.verify');
-            Route::resource('residents', ResidentController::class)->only(['index', 'create', 'store', 'show']);
+            Route::resource('announcements', AdminAnnouncementController::class)->except(['show']);
+            Route::get('/reports', [AdminReportController::class, 'index'])->name('reports.index');
             Route::get('/accounts', [AccountController::class, 'index'])->name('accounts.index');
+            Route::get('/accounts/create', [AccountController::class, 'create'])->name('accounts.create');
+            Route::post('/accounts', [AccountController::class, 'store'])->name('accounts.store');
+            Route::get('/accounts/{account}/edit', [AccountController::class, 'edit'])->name('accounts.edit');
+            Route::put('/accounts/{account}', [AccountController::class, 'update'])->name('accounts.update');
+            Route::delete('/accounts/{account}', [AccountController::class, 'destroy'])->name('accounts.destroy');
+            Route::post('/residents/{resident}/verify', [ResidentController::class, 'verify'])->name('residents.verify');
+            Route::resource('residents', ResidentController::class)->only(['index', 'create', 'store', 'show', 'edit', 'update', 'destroy']);
         });
 });

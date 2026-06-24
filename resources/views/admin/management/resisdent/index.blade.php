@@ -59,7 +59,7 @@
                                 <td class="text-center">
                                     <span class="purok-swatch" title="{{ $resident->purok->name ?? 'Unassigned' }}"></span>
                                 </td>
-                                <td class="resident-address-cell">{{ $resident->home_address ?? 'No address saved' }}</td>
+                                <td class="resident-address-cell">{{ $resident->full_address }}</td>
                                 <td>
                                     <span class="resident-status {{ $resident->verified_at ? 'resident-status--alive' : 'resident-status--pending' }}">
                                         <i class="fas {{ $resident->verified_at ? 'fa-gem' : 'fa-clock' }} fa-fw"></i>
@@ -79,6 +79,16 @@
                                         <a href="{{ route('admin.residents.show', $resident) }}" class="btn btn-sm btn-outline-primary table-icon-btn" title="View resident" aria-label="View resident">
                                             <i class="fas fa-eye fa-fw"></i>
                                         </a>
+                                        <a href="{{ route('admin.residents.edit', $resident) }}" class="btn btn-sm btn-outline-primary table-icon-btn" title="Edit resident" aria-label="Edit resident">
+                                            <i class="fas fa-pen fa-fw"></i>
+                                        </a>
+                                        <form method="POST" action="{{ route('admin.residents.destroy', $resident) }}" class="m-0" onsubmit="return confirm('Delete this resident record? This will also remove the linked login account if there is one.');">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-sm btn-outline-danger table-icon-btn" title="Delete resident" aria-label="Delete resident">
+                                                <i class="fas fa-trash fa-fw"></i>
+                                            </button>
+                                        </form>
                                     </div>
                                 </td>
                             </tr>

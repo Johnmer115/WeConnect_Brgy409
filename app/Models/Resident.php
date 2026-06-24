@@ -46,7 +46,13 @@ class Resident extends Model
     // Computed full name helper
     public function getFullNameAttribute(): string
     {
-        return collect([$this->first_name, $this->middle_name, $this->last_name, $this->suffix])
+        $givenName = collect([$this->first_name, $this->middle_name])
+            ->filter()
+            ->implode(' ');
+
+        $name = trim("{$this->last_name}, {$givenName}");
+
+        return collect([$name, $this->suffix])
             ->filter()
             ->implode(' ');
     }
@@ -55,5 +61,17 @@ class Resident extends Model
     public function getAgeAttribute(): int
     {
         return $this->date_of_birth->age;
+    }
+
+    public function getFullAddressAttribute(): string
+    {
+        return collect([
+            $this->home_address,
+            $this->purok?->name,
+            'Barangay 409',
+            'Manila City',
+        ])
+            ->filter()
+            ->implode(', ');
     }
 }

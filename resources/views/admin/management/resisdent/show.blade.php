@@ -59,6 +59,16 @@
                             </button>
                         </form>
                     @endunless
+                    <a href="{{ route('admin.residents.edit', $resident) }}" class="btn btn-sm btn-outline-primary">
+                        <i class="fas fa-pen fa-fw me-1"></i> Edit
+                    </a>
+                    <form method="POST" action="{{ route('admin.residents.destroy', $resident) }}" class="m-0" onsubmit="return confirm('Delete this resident record? This will also remove the linked login account if there is one.');">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-sm btn-outline-danger">
+                            <i class="fas fa-trash fa-fw me-1"></i> Delete
+                        </button>
+                    </form>
                     <a href="{{ route('admin.residents.index') }}" class="btn btn-sm btn-outline-secondary">
                         <i class="fas fa-arrow-left fa-fw me-1"></i> Back
                     </a>
@@ -177,7 +187,7 @@
 
                     <div>
                         <p class="rs-label">Home Address</p>
-                        <p class="rs-value">{{ $resident->home_address ?? '—' }}</p>
+                        <p class="rs-value">{{ $resident->full_address }}</p>
                     </div>
                     <div>
                         <p class="rs-label">Purok</p>

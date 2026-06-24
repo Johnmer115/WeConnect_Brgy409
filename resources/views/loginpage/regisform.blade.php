@@ -3,7 +3,7 @@
 @section('content')
 <style>
     .registration-card {
-        max-width: 740px;
+        max-width: 920px;
         font-size: 0.92rem;
     }
 
@@ -53,6 +53,10 @@
     .membership-box .form-check-label {
         line-height: 1.25;
     }
+
+    .registration-step[hidden] {
+        display: none;
+    }
 </style>
 
 <section class="d-flex align-items-start justify-content-center py-3 px-3">
@@ -79,50 +83,14 @@
                 </div>
             @endif
 
-            <form method="POST" action="{{ route('register.store') }}" id="resident-registration-form" data-draft-key="weconnect.resident-registration.draft">
+            @php
+                $showAccountStep = $errors->has('username') || $errors->has('password');
+            @endphp
+
+            <form method="POST" action="{{ route('register.store') }}" id="resident-registration-form" data-draft-key="weconnect.resident-registration.draft" data-start-step="{{ $showAccountStep ? 'account' : 'details' }}">
                 @csrf
 
-                {{-- ── ACCOUNT CREDENTIALS ── --}}
-                <p class="fw-semibold text-muted small text-uppercase mb-3">Account Credentials</p>
-
-                <div class="row g-3 mb-4">
-                    <div class="col-12 col-md-4">
-                        <label for="username" class="form-label">Username <span class="text-danger">*</span></label>
-                        <input type="text" id="username" name="username"
-                               value="{{ old('username') }}"
-                               class="form-control @error('username') is-invalid @enderror"
-                               placeholder="Choose a username">
-                        @error('username') <div class="invalid-feedback">{{ $message }}</div> @enderror
-                    </div>
-
-                    <div class="col-12 col-md-4">
-                        <label for="password" class="form-label">Password <span class="text-danger">*</span></label>
-                        <div class="input-group">
-                            <input type="password" id="password" name="password"
-                                   class="form-control @error('password') is-invalid @enderror"
-                                   placeholder="Min. 8 characters">
-                            <button type="button" class="btn btn-outline-secondary toggle-pw" data-target="password">
-                                <i class="fas fa-eye"></i>
-                            </button>
-                            @error('password') <div class="invalid-feedback">{{ $message }}</div> @enderror
-                        </div>
-                    </div>
-
-                    <div class="col-12 col-md-4">
-                        <label for="password_confirmation" class="form-label">Confirm Password <span class="text-danger">*</span></label>
-                        <div class="input-group">
-                            <input type="password" id="password_confirmation" name="password_confirmation"
-                                   class="form-control"
-                                   placeholder="Repeat password">
-                            <button type="button" class="btn btn-outline-secondary toggle-pw" data-target="password_confirmation">
-                                <i class="fas fa-eye"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <hr class="my-4">
-
+                <div class="registration-step" data-step="details" {{ $showAccountStep ? 'hidden' : '' }}>
                 {{-- ── BASIC INFORMATION ── --}}
                 <p class="fw-semibold text-muted small text-uppercase mb-3">Basic Information</p>
 
@@ -284,17 +252,15 @@
                         <input type="text" id="home_address" name="home_address"
                                value="{{ old('home_address') }}"
                                class="form-control" placeholder="House No., Street">
+                        <div class="form-text small">Purok and Barangay 409, Manila City are added automatically.</div>
                     </div>
 
                     <div class="col-12 col-md-6">
                         <label for="purok_id" class="form-label">Purok</label>
-                        <select id="purok_id" name="purok_id"
-                                class="form-select @error('purok_id') is-invalid @enderror">
-                            <option value="">-- Select Purok --</option>
+                        <select id="purok_id" name="purok_id" class="form-select @error('purok_id') is-invalid @enderror">
+                            <option value="">Choose Purok</option>
                             @foreach ($puroks as $purok)
-                                <option value="{{ $purok->id }}" {{ old('purok_id') == $purok->id ? 'selected' : '' }}>
-                                    {{ $purok->name }}
-                                </option>
+                                <option value="{{ $purok->id }}" @selected((string) old('purok_id') === (string) $purok->id)>{{ $purok->name }}</option>
                             @endforeach
                         </select>
                         @error('purok_id') <div class="invalid-feedback">{{ $message }}</div> @enderror
@@ -311,10 +277,56 @@
                     </div>
                 </div>
 
-                {{-- ── BUTTONS ── --}}
                 <div class="d-flex justify-content-center gap-3 pt-2">
-                    <button type="submit" class="btn btn-success px-5 py-2">Submit Registration</button>
+                    <button type="button" id="next-step" class="btn btn-success px-5 py-2">Next Step</button>
                     <button type="reset" class="btn btn-warning px-5 py-2">Reset</button>
+                </div>
+                </div>
+
+                <div class="registration-step" data-step="account" {{ $showAccountStep ? '' : 'hidden' }}>
+                <hr class="my-4">
+                <p class="fw-semibold text-muted small text-uppercase mb-3">Account Credentials</p>
+
+                <div class="row g-3 mb-4">
+                    <div class="col-12 col-md-4">
+                        <label for="username" class="form-label">Username <span class="text-danger">*</span></label>
+                        <input type="text" id="username" name="username"
+                               value="{{ old('username') }}"
+                               class="form-control @error('username') is-invalid @enderror"
+                               placeholder="Choose a username">
+                        @error('username') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                    </div>
+
+                    <div class="col-12 col-md-4">
+                        <label for="password" class="form-label">Password <span class="text-danger">*</span></label>
+                        <div class="input-group">
+                            <input type="password" id="password" name="password"
+                                   class="form-control @error('password') is-invalid @enderror"
+                                   placeholder="Min. 8 characters">
+                            <button type="button" class="btn btn-outline-secondary toggle-pw" data-target="password">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            @error('password') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-md-4">
+                        <label for="password_confirmation" class="form-label">Confirm Password <span class="text-danger">*</span></label>
+                        <div class="input-group">
+                            <input type="password" id="password_confirmation" name="password_confirmation"
+                                   class="form-control"
+                                   placeholder="Repeat password">
+                            <button type="button" class="btn btn-outline-secondary toggle-pw" data-target="password_confirmation">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-center gap-3 pt-2">
+                    <button type="button" id="previous-step" class="btn btn-outline-secondary px-5 py-2">Back</button>
+                    <button type="submit" class="btn btn-success px-5 py-2">Submit Registration</button>
+                </div>
                 </div>
 
                 <p class="text-center text-muted small mt-3 mb-0">
@@ -328,6 +340,10 @@
 
 <script>
     const registrationForm = document.getElementById('resident-registration-form');
+    const detailsStep = registrationForm.querySelector('[data-step="details"]');
+    const accountStep = registrationForm.querySelector('[data-step="account"]');
+    const nextStepButton = document.getElementById('next-step');
+    const previousStepButton = document.getElementById('previous-step');
     const dateOfBirthInput = document.getElementById('date_of_birth');
     const ageInput = document.getElementById('age');
 
@@ -351,6 +367,37 @@
     }
 
     dateOfBirthInput.addEventListener('change', updateAge);
+
+    function showStep(step) {
+        const showAccount = step === 'account';
+
+        detailsStep.hidden = showAccount;
+        accountStep.hidden = !showAccount;
+
+        const focusTarget = showAccount
+            ? document.getElementById('username')
+            : document.getElementById('last_name');
+
+        if (focusTarget) {
+            focusTarget.focus();
+        }
+    }
+
+    nextStepButton.addEventListener('click', function () {
+        showStep('account');
+    });
+
+    previousStepButton.addEventListener('click', function () {
+        showStep('details');
+    });
+
+    registrationForm.addEventListener('submit', function (event) {
+        if (!detailsStep.hidden) {
+            event.preventDefault();
+            event.stopImmediatePropagation();
+            showStep('account');
+        }
+    }, true);
 
     // Password show/hide toggle (works for both password fields)
     document.querySelectorAll('.toggle-pw').forEach(function (btn) {
@@ -424,7 +471,10 @@
 
         registrationForm.addEventListener('reset', function () {
             localStorage.removeItem(storageKey);
-            setTimeout(updateAge, 0);
+            setTimeout(function () {
+                updateAge();
+                showStep('details');
+            }, 0);
         });
     })();
 </script>

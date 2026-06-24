@@ -46,4 +46,25 @@ class User extends Authenticatable
     {
         return $this->role === 'resident';
     }
+
+    public function getAccountTypeAttribute(): string
+    {
+        return $this->isResident() ? 'User' : 'Admin';
+    }
+
+    public function getPositionLabelAttribute(): string
+    {
+        return match ($this->role) {
+            'chairman' => 'Barangay Chairman',
+            'secretary' => 'Barangay Councilor',
+            'kagawad' => 'Barangay SK Councilor',
+            'resident' => 'Resident',
+            default => ucfirst($this->role ?? 'Unknown'),
+        };
+    }
+
+    public function resident()
+    {
+        return $this->hasOne(Resident::class);
+    }
 }
