@@ -50,7 +50,7 @@ class ResidentController extends Controller
         $resident = Resident::create($validated);
 
         return redirect()
-            ->route('admin.residents.show', $resident)
+            ->route('admin.residents.index', $resident) 
             ->with('success', 'Resident registered successfully.');
     }
 
@@ -74,7 +74,7 @@ class ResidentController extends Controller
         $resident->update($this->validatedResident($request));
 
         return redirect()
-            ->route('admin.residents.show', $resident)
+            ->route('admin.residents.index', $resident)
             ->with('success', 'Resident updated successfully.');
     }
 
@@ -113,12 +113,7 @@ class ResidentController extends Controller
 
     private function barangayPuroks()
     {
-        $names = ['Sunflower', 'Rosal', 'Gumamela', 'Sampaguita', 'Ilang-Ilang'];
-
-        return Purok::whereIn('name', $names)
-            ->get()
-            ->sortBy(fn ($purok) => array_search($purok->name, $names, true))
-            ->values();
+        return Purok::orderBy('id')->get();
     }
 
     private function validatedResident(Request $request): array

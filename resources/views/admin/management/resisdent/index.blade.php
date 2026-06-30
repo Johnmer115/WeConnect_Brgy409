@@ -57,7 +57,14 @@
                             <tr>
                                 <td class="resident-name-cell">{{ $resident->full_name }}</td>
                                 <td class="text-center">
-                                    <span class="purok-swatch" title="{{ $resident->purok->name ?? 'Unassigned' }}"></span>
+                                    @if($resident->purok)
+                                        <span class="d-inline-flex align-items-center gap-2">
+                                            <span class="purok-swatch-dot" style="width: 10px; height: 10px; border-radius: 50%; display: inline-block; background-color: {{ $resident->purok->color_code }}; border: 1px solid rgba(0,0,0,0.15);" title="{{ $resident->purok->name }}"></span>
+                                            <span class="small text-muted">{{ $resident->purok->name }}</span>
+                                        </span>
+                                    @else
+                                        <span class="text-muted small">Unassigned</span>
+                                    @endif
                                 </td>
                                 <td class="resident-address-cell">{{ $resident->full_address }}</td>
                                 <td>
