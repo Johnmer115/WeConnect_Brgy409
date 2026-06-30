@@ -2258,10 +2258,269 @@ body {
     .cert-form-row-3 { grid-template-columns: repeat(2, 1fr); }
 }
 
+
 @media (max-width: 600px) {
     .cert-form-row-2,
     .cert-form-row-3,
     .cert-form-row-4 { grid-template-columns: 1fr; }
 }
+
+/* ═══════════════════════════════════════════════════════════════
+   DASHBOARD MODULE — WeConnect Brgy 409
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── Banner display ──────────────────────────────────────────── */
+.db-banner-img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+    display: block;
+}
+
+.db-banner-placeholder {
+    width: 100%;
+    min-height: 200px;
+    border: 2px dashed #d1d9e6;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: #f8fafc;
+    color: #94a3b8;
+    padding: 2rem;
+}
+
+/* ── Officials list ──────────────────────────────────────────── */
+.db-official-group-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #64748b;
+    margin-bottom: 0.4rem;
+    margin-top: 0;
+    border-bottom: 1px solid #f1f5f9;
+    padding-bottom: 0.25rem;
+}
+
+.db-official-row {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    padding: 0.22rem 0;
+    border-bottom: 1px solid #f8fafc;
+}
+
+.db-official-position {
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--wc-blue-dark);
+    min-width: 90px;
+    flex-shrink: 0;
+}
+
+.db-official-name {
+    font-size: 0.82rem;
+    color: var(--wc-ink);
+    font-weight: 500;
+}
+
+/* ── Event Timeline ──────────────────────────────────────────── */
+#timeline-container {
+    position: relative;
+    padding-left: 1.5rem;
+    max-height: 350px;
+    overflow-y: auto;
+    padding-right: 0.5rem;
+}
+
+#timeline-container::-webkit-scrollbar {
+    width: 6px;
+}
+
+#timeline-container::-webkit-scrollbar-track {
+    background: #f1f5f9;
+    border-radius: 10px;
+}
+
+#timeline-container::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 10px;
+}
+
+#timeline-container::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+#timeline-container::before {
+    content: '';
+    position: absolute;
+    left: 0.45rem;
+    top: 0.5rem;
+    bottom: 0.5rem;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--wc-blue), #bfd7f5);
+    border-radius: 99px;
+}
+
+.db-timeline-item {
+    position: relative;
+    margin-bottom: 1.2rem;
+}
+
+.db-timeline-item:last-child { margin-bottom: 0; }
+
+.db-timeline-dot {
+    position: absolute;
+    left: -1.5rem;
+    top: 0.35rem;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--wc-blue);
+    border: 2px solid #fff;
+    box-shadow: 0 0 0 2px var(--wc-blue-line);
+}
+
+.db-timeline-body {
+    background: #f8fafc;
+    border: 1px solid #e9eef5;
+    border-radius: 9px;
+    padding: 0.6rem 0.9rem;
+    transition: background 0.13s;
+}
+
+.db-timeline-body:hover { background: var(--wc-blue-soft); }
+
+.db-timeline-date {
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: #64748b;
+    letter-spacing: 0.03em;
+    margin-bottom: 0.15rem;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+.db-timeline-title {
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: var(--wc-ink);
+    margin-bottom: 0.15rem;
+}
+
+.db-timeline-desc {
+    font-size: 0.775rem;
+    color: #64748b;
+    line-height: 1.4;
+}
+
+/* ── Empty state ─────────────────────────────────────────────── */
+.db-empty-state {
+    text-align: center;
+    padding: 2rem 1rem;
+    color: #94a3b8;
+}
+
+/* ── FullCalendar overrides ──────────────────────────────────── */
+#dashboard-calendar .fc {
+    font-size: 0.82rem;
+    font-family: inherit;
+}
+
+#dashboard-calendar .fc-toolbar-title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--wc-ink);
+}
+
+#dashboard-calendar .fc-button {
+    background: var(--wc-blue) !important;
+    border-color: var(--wc-blue) !important;
+    font-size: 0.78rem !important;
+    padding: 0.2rem 0.55rem !important;
+    border-radius: 6px !important;
+    box-shadow: none !important;
+}
+
+#dashboard-calendar .fc-button:hover {
+    background: var(--wc-blue-dark) !important;
+    border-color: var(--wc-blue-dark) !important;
+}
+
+#dashboard-calendar .fc-button-active,
+#dashboard-calendar .fc-button:disabled {
+    background: var(--wc-blue-dark) !important;
+    border-color: var(--wc-blue-dark) !important;
+    opacity: 0.85 !important;
+}
+
+#dashboard-calendar .fc-col-header-cell-cushion {
+    font-weight: 700;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    color: #64748b;
+    text-decoration: none;
+}
+
+#dashboard-calendar .fc-daygrid-day-number {
+    font-size: 0.78rem;
+    color: #334155;
+    text-decoration: none;
+    padding: 4px 6px;
+}
+
+#dashboard-calendar .fc-daygrid-day.fc-day-today {
+    background: var(--wc-blue-soft) !important;
+}
+
+#dashboard-calendar .fc-event {
+    border-radius: 4px !important;
+    font-size: 0.72rem !important;
+    font-weight: 600 !important;
+    padding: 1px 4px !important;
+    border: none !important;
+}
+
+#dashboard-calendar .fc-daygrid-event-dot {
+    border-color: var(--wc-blue) !important;
+}
+
+/* ── Dashboard table panel (reuse of existing table-panel style) */
+.table-panel-title {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--wc-ink);
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin: 0;
+}
+
+.stat-icon {
+    width: 2.6rem;
+    height: 2.6rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+}
+
+.stat-value {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--wc-ink);
+    line-height: 1;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .db-banner-img { max-height: 180px; }
+    #timeline-container { padding-left: 1.2rem; }
+}
+
 
 

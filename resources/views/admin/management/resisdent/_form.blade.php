@@ -20,7 +20,12 @@
         </div>
         <div class="col-12 col-md-3">
             <label for="suffix" class="form-label">Suffix</label>
-            <input type="text" id="suffix" name="suffix" value="{{ old('suffix', $resident->suffix) }}" class="form-control @error('suffix') is-invalid @enderror" placeholder="Jr, Sr, III">
+            <select id="suffix" name="suffix" class="form-select @error('suffix') is-invalid @enderror">
+                <option value="">None</option>
+                @foreach (['Jr.', 'Sr.', 'II', 'III', 'IV', 'V', 'VI'] as $suffixOption)
+                    <option value="{{ $suffixOption }}" @selected(old('suffix', $resident->suffix) === $suffixOption)>{{ $suffixOption }}</option>
+                @endforeach
+            </select>
             @error('suffix') <div class="invalid-feedback">{{ $message }}</div> @enderror
         </div>
         <div class="col-12 col-md-3">
@@ -50,7 +55,22 @@
         </div>
         <div class="col-12 col-md-4">
             <label for="religion" class="form-label">Religion</label>
-            <input type="text" id="religion" name="religion" value="{{ old('religion', $resident->religion) }}" class="form-control @error('religion') is-invalid @enderror">
+            <select id="religion" name="religion" class="form-select @error('religion') is-invalid @enderror">
+                <option value="">Select religion</option>
+                @foreach ([
+                    'Roman Catholic',
+                    'Iglesia ni Cristo',
+                    'Islam',
+                    'Born Again Christian',
+                    'Jehovah\'s Witnesses',
+                    'Seventh-day Adventist',
+                    'Baptist',
+                    'Methodist',
+                    'None / Others'
+                ] as $religionOption)
+                    <option value="{{ $religionOption }}" @selected(old('religion', $resident->religion) === $religionOption)>{{ $religionOption }}</option>
+                @endforeach
+            </select>
             @error('religion') <div class="invalid-feedback">{{ $message }}</div> @enderror
         </div>
         <div class="col-12 col-md-4">
@@ -62,13 +82,100 @@
             </select>
             @error('health_status') <div class="invalid-feedback">{{ $message }}</div> @enderror
         </div>
-        <div class="col-12 col-md-4">
+        <div class="col-12 col-md-4" id="deceased_date_group">
             <label for="date_deceased" class="form-label">Date Deceased</label>
             <input type="date" id="date_deceased" name="date_deceased" value="{{ old('date_deceased', $resident->date_deceased?->format('Y-m-d')) }}" class="form-control @error('date_deceased') is-invalid @enderror">
             @error('date_deceased') <div class="invalid-feedback">{{ $message }}</div> @enderror
         </div>
     </div>
 </div>
+
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    // ── Date Deceased Toggle ──────────────────────────────────────
+    const healthStatusSelect = document.getElementById('health_status');
+    const deceasedDateGroup = document.getElementById('deceased_date_group');
+    const deceasedDateInput = document.getElementById('date_deceased');
+
+    function toggleDeceasedDate() {
+        if (healthStatusSelect.value === 'Deceased') {
+            deceasedDateGroup.style.display = '';
+        } else {
+            deceasedDateGroup.style.display = 'none';
+            deceasedDateInput.value = '';
+        }
+    }
+
+    if (healthStatusSelect && deceasedDateGroup) {
+        healthStatusSelect.addEventListener('change', toggleDeceasedDate);
+        toggleDeceasedDate();
+    }
+
+    // ── Draft Retention / Auto-Save ────────────────────────────────
+    const form = document.querySelector('form[action*="residents"]');
+    if (form && !form.querySelector('input[name="_method"]')) { // Only run on Create form (no PUT/PATCH method)
+        const storageKey = 'resident_form_draft';
+
+        // Save form inputs to localStorage
+        function saveDraft() {
+            const formData = {};
+            const inputs = form.querySelectorAll('input:not([type="hidden"]):not([type="password"]):not([type="file"]), select, textarea');
+            inputs.forEach(input => {
+                if (input.type === 'checkbox') {
+                    formData[input.name] = input.checked;
+                } else {
+                    formData[input.name] = input.value;
+                }
+            });
+            localStorage.setItem(storageKey, JSON.stringify(formData));
+        }
+
+        // Load form inputs from localStorage
+        function loadDraft() {
+            const savedData = localStorage.getItem(storageKey);
+            if (!savedData) return;
+            try {
+                const formData = JSON.parse(savedData);
+                Object.keys(formData).forEach(name => {
+                    const input = form.querySelector(`[name="${name}"]`);
+                    if (!input) return;
+                    if (input.type === 'checkbox') {
+                        input.checked = formData[name];
+                    } else {
+                        input.value = formData[name];
+                    }
+                });
+                // Re-run toggle logic in case health status was loaded from draft
+                toggleDeceasedDate();
+            } catch (e) {
+                console.error('Failed to restore form draft:', e);
+            }
+        }
+
+        // Load draft on load
+        loadDraft();
+
+        // Save draft on any input change
+        form.addEventListener('input', saveDraft);
+        form.addEventListener('change', saveDraft);
+
+        // Clear draft when form is submitted
+        form.addEventListener('submit', function () {
+            localStorage.removeItem(storageKey);
+        });
+
+        // Clear draft when cancel button is clicked
+        const cancelBtn = form.querySelector('.btn-outline-secondary, .btn-secondary');
+        if (cancelBtn) {
+            cancelBtn.addEventListener('click', function () {
+                localStorage.removeItem(storageKey);
+            });
+        }
+    }
+});
+</script>
+@endpush
 
 <div class="form-section">
     <h2 class="form-section-title">Contact and Address</h2>

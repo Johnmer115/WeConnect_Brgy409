@@ -38,7 +38,10 @@ Route::middleware('auth')->group(function () {
         ->prefix('admin')
         ->name('admin.')
         ->group(function () {
-            Route::get('/dashboard', DashboardController::class)->name('dashboard');
+            Route::get('/dashboard', [DashboardController::class, '__invoke'])->name('dashboard');
+            Route::post('/dashboard/banner', [DashboardController::class, 'uploadBanner'])->name('dashboard.banner.upload');
+            Route::delete('/dashboard/banner', [DashboardController::class, 'deleteBanner'])->name('dashboard.banner.delete');
+            Route::get('/dashboard/events', [DashboardController::class, 'events'])->name('dashboard.events');
             Route::resource('announcements', AdminAnnouncementController::class)->except(['show']);
             Route::get('/reports', [AdminReportController::class, 'index'])->name('reports.index');
             Route::get('/certificates/resident-lookup', [CertificateController::class, 'residentLookup'])->name('certificates.residentLookup');
