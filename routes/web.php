@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AccountController;
 use App\Http\Controllers\Admin\AnnouncementController as AdminAnnouncementController;
+use App\Http\Controllers\Admin\CertificateController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ReportController as AdminReportController;
 use App\Http\Controllers\Admin\ResidentController;
@@ -40,6 +41,14 @@ Route::middleware('auth')->group(function () {
             Route::get('/dashboard', DashboardController::class)->name('dashboard');
             Route::resource('announcements', AdminAnnouncementController::class)->except(['show']);
             Route::get('/reports', [AdminReportController::class, 'index'])->name('reports.index');
+            Route::get('/certificates/resident-lookup', [CertificateController::class, 'residentLookup'])->name('certificates.residentLookup');
+            Route::get('/certificates', [CertificateController::class, 'index'])->name('certificates.index');
+            Route::get('/certificates/create', [CertificateController::class, 'create'])->name('certificates.create');
+            Route::post('/certificates', [CertificateController::class, 'store'])->name('certificates.store');
+            Route::get('/certificates/{certificate}/edit', [CertificateController::class, 'edit'])->name('certificates.edit');
+            Route::put('/certificates/{certificate}', [CertificateController::class, 'update'])->name('certificates.update');
+            Route::patch('/certificates/{certificate}/status', [CertificateController::class, 'updateStatus'])->name('certificates.updateStatus');
+            Route::get('/certificates/{certificate}/print', [CertificateController::class, 'print'])->name('certificates.print');
             Route::get('/accounts', [AccountController::class, 'index'])->name('accounts.index');
             Route::get('/accounts/create', [AccountController::class, 'create'])->name('accounts.create');
             Route::post('/accounts', [AccountController::class, 'store'])->name('accounts.store');
