@@ -8,7 +8,6 @@ use App\Models\Purok;
 use App\Models\Resident;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
@@ -61,7 +60,7 @@ class RegisterController extends Controller
                 'email'    => $validated['email'] ?? null,
                 'password' => Hash::make($validated['password']),
                 'role'     => 'resident',
-                'status'   => 'active',
+                'status'   => 'inactive',
             ]);
 
             // 2. Create the resident profile linked to that account.
@@ -90,12 +89,9 @@ class RegisterController extends Controller
             return $user;
         });
 
-        // 3. Log them in automatically
-        Auth::login($user);
-
         return redirect()
-            ->route('home')
-            ->with('success', 'Registration successful. Your account is pending admin approval.');
+            ->route('login')
+            ->with('success', 'Registration submitted. Please wait for an admin to approve your account before logging in.');
     }
 
     private function registrationPuroks()

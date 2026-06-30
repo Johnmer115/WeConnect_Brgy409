@@ -1,6 +1,6 @@
 :root {
-    --wc-sidebar-width: 270px;
-    --wc-sidebar-collapsed-width: 84px;
+    --wc-sidebar-width: 238px;
+    --wc-sidebar-collapsed-width: 72px;
     --wc-blue: #2f80d1;
     --wc-blue-dark: #1d5f9f;
     --wc-blue-soft: #eaf4ff;
@@ -29,10 +29,13 @@ body {
     position: fixed;
     inset: 0 auto 0 0;
     z-index: 1020;
+    display: flex;
+    flex-direction: column;
     width: var(--wc-sidebar-width);
-    overflow-y: auto;
+    height: 100vh;
+    overflow: hidden;
     color: #ffffff;
-    background: linear-gradient(180deg, var(--wc-sidebar), var(--wc-sidebar-dark));
+    background:  var(--wc-sidebar-dark);
     border-right: 1px solid #0b2d4f;
     transition: width 0.2s ease;
 }
@@ -44,9 +47,9 @@ body {
 .sb-logo {
     display: flex;
     align-items: center;
-    gap: 0.8rem;
-    min-height: 86px;
-    padding: 0.95rem;
+    gap: 0.65rem;
+    min-height: 72px;
+    padding: 0.8rem;
     border-bottom: 1px solid rgba(255, 255, 255, 0.16);
     background: rgba(255, 255, 255, 0.03);
 }
@@ -54,8 +57,8 @@ body {
 .sb-logo-icon {
     display: grid;
     flex: 0 0 auto;
-    width: 48px;
-    height: 48px;
+    width: 40px;
+    height: 40px;
     place-items: center;
     overflow: hidden;
     border-radius: 50%;
@@ -63,13 +66,13 @@ body {
 }
 
 .sb-logo-icon img {
-    width: 38px;
-    height: 38px;
+    width: 32px;
+    height: 32px;
     object-fit: contain;
 }
 
 .sb-logo-name {
-    font-size: 1.08rem;
+    font-size: 0.94rem;
     font-weight: 700;
     line-height: 1.05;
 }
@@ -92,14 +95,18 @@ body {
 .sb-nav {
     display: flex;
     flex-direction: column;
-    min-height: calc(100vh - 86px);
-    padding: 0.95rem;
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+    padding: 0.75rem;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.28) transparent;
 }
 
 .sb-section {
-    margin: 1rem 0 0.5rem;
+    margin: 0.72rem 0 0.38rem;
     color: rgba(255, 255, 255, 0.62);
-    font-size: 0.76rem;
+    font-size: 0.68rem;
     font-weight: 700;
     letter-spacing: 0.06em;
     text-transform: uppercase;
@@ -107,7 +114,7 @@ body {
 
 .sb-list {
     display: grid;
-    gap: 0.24rem;
+    gap: 0.18rem;
     margin: 0;
     padding: 0;
     list-style: none;
@@ -117,23 +124,23 @@ body {
 .sb-disabled {
     display: flex;
     align-items: center;
-    gap: 0.75rem;
-    min-height: 46px;
-    padding: 0.7rem 0.85rem;
+    gap: 0.6rem;
+    min-height: 38px;
+    padding: 0.52rem 0.68rem;
     color: rgba(255, 255, 255, 0.82);
     border: 1px solid transparent;
     border-radius: 0.5rem;
-    font-size: 0.98rem;
+    font-size: 0.88rem;
     text-decoration: none;
     transition: background-color 0.16s ease, border-color 0.16s ease, color 0.16s ease, transform 0.16s ease;
 }
 
 .sb-parent {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) 2.35rem;
+    grid-template-columns: minmax(0, 1fr) 2rem;
     align-items: center;
-    gap: 0.2rem;
-    padding: 0.15rem;
+    gap: 0.14rem;
+    padding: 0.12rem;
     border-radius: 0.55rem;
     background: rgba(255, 255, 255, 0.03);
 }
@@ -145,8 +152,8 @@ body {
 
 .sb-subtoggle {
     display: grid;
-    width: 2.35rem;
-    min-height: 46px;
+    width: 2rem;
+    min-height: 38px;
     place-items: center;
     color: rgba(255, 255, 255, 0.72);
     border: 0;
@@ -208,7 +215,8 @@ body {
 }
 
 .sb-list i {
-    width: 1.45rem;
+    width: 1.2rem;
+    font-size: 0.88rem;
 }
 
 .sb-parent-link:hover {
@@ -219,17 +227,17 @@ body {
 .sb-sublist {
     display: grid;
     gap: 0.1rem;
-    margin: 0.35rem 0 0.45rem;
-    padding: 0.2rem 0 0.2rem 1.3rem;
+    margin: 0.28rem 0 0.35rem;
+    padding: 0.16rem 0 0.16rem 1rem;
     list-style: none;
     border-left: 1px solid rgba(255, 255, 255, 0.16);
 }
 
 .sb-sublist a {
-    min-height: 38px;
-    padding-block: 0.45rem;
-    padding-inline: 0.75rem;
-    font-size: 0.88rem;
+    min-height: 32px;
+    padding-block: 0.34rem;
+    padding-inline: 0.6rem;
+    font-size: 0.8rem;
     border-radius: 0.45rem;
 }
 
@@ -250,29 +258,30 @@ body {
 }
 
 .sb-footer {
-    margin-top: auto;
-    padding-top: 1rem;
+    flex: 0 0 auto;
+    padding: 0.72rem 0.75rem;
     border-top: 1px solid rgba(255, 255, 255, 0.12);
+    background: rgba(13, 52, 92, 0.96);
 }
 
 .sb-footer-chip {
     display: inline-flex;
     align-items: center;
-    gap: 0.45rem;
-    min-height: 2.1rem;
-    padding: 0.3rem 0.7rem;
+    gap: 0.34rem;
+    min-height: 1.8rem;
+    padding: 0.22rem 0.55rem;
     border: 1px solid rgba(255, 255, 255, 0.14);
     border-radius: 999px;
     color: #ffffff;
     background: rgba(255, 255, 255, 0.08);
-    font-size: 0.78rem;
+    font-size: 0.7rem;
     font-weight: 800;
 }
 
 .sb-footer-note {
-    margin-top: 0.55rem;
+    margin-top: 0.42rem;
     color: rgba(255, 255, 255, 0.62);
-    font-size: 0.76rem;
+    font-size: 0.66rem;
     line-height: 1.35;
 }
 

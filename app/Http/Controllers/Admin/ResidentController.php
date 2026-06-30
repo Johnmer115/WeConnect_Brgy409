@@ -95,12 +95,18 @@ class ResidentController extends Controller
 
     public function verify(Request $request, Resident $resident)
     {
-        if (! $resident->verified_at) {
-            $resident->forceFill([
-                'verified_at' => now(),
-                'verified_by' => $request->user()->id,
-            ])->save();
-        }
+        DB::transaction(function () use ($request, $resident) {
+            if (! $resident->verified_at) {
+                $resident->forceFill([
+                    'verified_at' => now(),
+                    'verified_by' => $request->user()->id,
+                ])->save();
+            }
+
+            if ($resident->user && $resident->user->status !== 'active') {
+                $resident->user->forceFill(['status' => 'active'])->save();
+            }
+        });
 
         return back()->with('success', 'Resident registration accepted.');
     }

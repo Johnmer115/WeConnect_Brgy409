@@ -34,6 +34,16 @@ class LoginController extends Controller
 
         $user = Auth::user();
 
+        if ($user->isResident() && ! $user->resident?->verified_at) {
+            Auth::logout();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+
+            return back()
+                ->withErrors(['account' => 'Your registration is pending admin approval. Please wait until an admin confirms your account.'])
+                ->onlyInput('account');
+        }
+
         if ($user->status !== 'active') {
             Auth::logout();
             return back()->withErrors(['account' => 'This account has been deactivated.']);

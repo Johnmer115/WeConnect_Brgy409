@@ -32,20 +32,6 @@
                     </span>
                 @endif
             </li>
-            <li>
-                @if ($resident->verified_at)
-                    <a href="{{ route('resident.reports') }}"
-                       class="{{ request()->routeIs('resident.reports') ? 'active' : '' }}">
-                        <i class="fas fa-chart-line fa-fw"></i>
-                        <span>Reports</span>
-                    </a>
-                @else
-                    <span class="sb-disabled">
-                        <i class="fas fa-chart-line fa-fw"></i>
-                        <span>Reports</span>
-                    </span>
-                @endif
-            </li>
         </ul>
     </nav>
 </aside>

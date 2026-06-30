@@ -4,11 +4,13 @@
             <img src="{{ asset('image/logo/arellano_logo.png') }}" alt="WeConnect Logo">
         </div>
         <div class="sb-logo-name">
-            WeConnect <span>Brgy 409</span>
+            WeConnect | Brgy 409
         </div>
     </div>
 
     <nav class="sb-nav">
+
+        {{-- ── Overview ── --}}
         <p class="sb-section">Overview</p>
         <ul class="sb-list">
             <li>
@@ -20,6 +22,7 @@
             </li>
         </ul>
 
+        {{-- ── Management ── --}}
         <p class="sb-section">Management</p>
         <ul class="sb-list">
             <li>
@@ -27,13 +30,6 @@
                    class="{{ request()->routeIs('admin.announcements.*') ? 'active' : '' }}">
                     <i class="fas fa-bullhorn fa-fw"></i>
                     <span>Announcements</span>
-                </a>
-            </li>
-            <li>
-                <a href="{{ route('admin.reports.index') }}"
-                   class="{{ request()->routeIs('admin.reports.*') ? 'active' : '' }}">
-                    <i class="fas fa-chart-bar fa-fw"></i>
-                    <span>Reports</span>
                 </a>
             </li>
             <li>
@@ -63,39 +59,41 @@
                 </ul>
             </li>
             <li>
-                @php $accountsMenuOpen = request()->routeIs('admin.accounts.*') || request()->routeIs('admin.logs.*'); @endphp
-                <div class="sb-parent {{ $accountsMenuOpen ? 'is-open' : '' }}">
-                    <a href="{{ route('admin.accounts.index') }}"
-                       class="sb-parent-link {{ $accountsMenuOpen ? 'active' : '' }}">
-                        <i class="fas fa-user-shield fa-fw"></i>
-                        <span>Accounts</span>
-                    </a>
-                    <button type="button"
-                            class="sb-subtoggle"
-                            data-target="admin-accounts-submenu"
-                            aria-expanded="{{ $accountsMenuOpen ? 'true' : 'false' }}"
-                            aria-label="Toggle accounts submenu">
-                        <i class="fas fa-chevron-down"></i>
-                    </button>
-                </div>
-                <ul class="sb-sublist" id="admin-accounts-submenu" {{ $accountsMenuOpen ? '' : 'hidden' }}>
-                    <li>
-                        <a href="#"
-                           class="{{ request()->routeIs('admin.logs.*') ? 'active' : '' }}">
-                            <i class="fas fa-history fa-fw"></i>
-                            <span>Logs</span>
-                        </a>
-                    </li>
-                </ul>
+                 @php $accountsMenuOpen = request()->routeIs('admin.accounts.*'); @endphp
+                <a href="{{ route('admin.accounts.index') }}"
+                   class="{{ $accountsMenuOpen ? 'active' : '' }}">
+                    <i class="fas fa-user-shield fa-fw"></i>
+                    <span>Accounts</span>
+                </a>
             </li>
         </ul>
 
-        <div class="sb-footer">
-            <div class="sb-footer-chip">
-                <i class="fas fa-shield-halved fa-fw"></i>
-                <span>Admin Portal</span>
-            </div>
-            <div class="sb-footer-note">Barangay operations and resident records</div>
-        </div>
+        {{-- ── Reports & Logs ── --}}
+        <p class="sb-section">System Logs</p>
+        <ul class="sb-list">
+            <li>
+                <a href="{{ route('admin.reports.index') }}"
+                   class="{{ request()->routeIs('admin.reports.*') ? 'active' : '' }}">
+                    <i class="fas fa-chart-bar fa-fw"></i>
+                    <span>Reports</span>
+                </a>
+            </li>
+            <li>
+                <a href="#"
+                   class="{{ request()->routeIs('admin.logs.*') ? 'active' : '' }}">
+                    <i class="fas fa-history fa-fw"></i>
+                    <span>Activity Logs</span>
+                </a>
+            </li>
+        </ul>
+
     </nav>
+
+    <div class="sb-footer">
+        <div class="sb-footer-chip d-flex justify-content-center">
+            <i class="fas fa-shield-halved fa-fw"></i>
+            <span>Admin Panel</span>
+        </div>
+        <div class="sb-footer-note text-center">@ Copyright 2026 by WeConnect | Brgy 409</div>
+    </div>
 </aside>
