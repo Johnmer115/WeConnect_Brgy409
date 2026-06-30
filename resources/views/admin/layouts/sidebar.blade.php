@@ -1,7 +1,7 @@
 <aside class="sidebar" id="sidebar">
     <div class="sb-logo">
         <div class="sb-logo-icon">
-            <img src="{{ asset('image/logo/arellano_logo.png') }}" alt="WeConnect Logo">
+            <img src="{{ asset('image/brgy_logo.png') }}" alt="WeConnect Logo">
         </div>
         <div class="sb-logo-name">
             WeConnect | Brgy 409
