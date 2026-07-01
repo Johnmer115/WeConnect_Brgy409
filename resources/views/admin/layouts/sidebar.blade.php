@@ -79,8 +79,8 @@
                 </a>
             </li>
             <li>
-                <a href="#"
-                   class="{{ request()->routeIs('admin.logs.*') ? 'active' : '' }}">
+                <a href="{{ route('admin.activity.index') }}"
+                   class="{{ request()->routeIs('admin.activity.*') ? 'active' : '' }}">
                     <i class="fas fa-history fa-fw"></i>
                     <span>Activity Logs</span>
                 </a>

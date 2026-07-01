@@ -2,16 +2,17 @@
 
 @section('title', 'Dashboard - WeConnect Brgy 409')
 @section('page-title', 'Dashboard')
+@section('flash-wrapper-class', 'px-3 pt-0')
 
 @section('content')
-<div class="container-fluid admin-page">
+<div class="container-fluid admin-page admin-page--dashboard">
 
     {{-- ══════════════════════════════════════════════════════════
          ROW 1 — STAT CARDS (unchanged)
     ══════════════════════════════════════════════════════════ --}}
     <div class="row g-3 mb-4">
         <div class="col-12 col-md-4">
-            <div class="card border-0 shadow-sm rounded-3 h-100">
+            <div class="card dashboard-panel h-100">
                 <div class="card-body p-3 d-flex align-items-center gap-3">
                     <div class="stat-icon rounded-2 bg-primary-subtle text-primary"><i class="fas fa-users fa-fw"></i></div>
                     <div>
@@ -22,7 +23,7 @@
             </div>
         </div>
         <div class="col-12 col-md-4">
-            <div class="card border-0 shadow-sm rounded-3 h-100">
+            <div class="card dashboard-panel h-100">
                 <div class="card-body p-3 d-flex align-items-center gap-3">
                     <div class="stat-icon rounded-2 bg-warning-subtle text-warning"><i class="fas fa-user-clock fa-fw"></i></div>
                     <div>
@@ -33,7 +34,7 @@
             </div>
         </div>
         <div class="col-12 col-md-4">
-            <div class="card border-0 shadow-sm rounded-3 h-100">
+            <div class="card dashboard-panel h-100">
                 <div class="card-body p-3 d-flex align-items-center gap-3">
                     <div class="stat-icon rounded-2 bg-success-subtle text-success"><i class="fas fa-user-shield fa-fw"></i></div>
                     <div>
@@ -52,15 +53,13 @@
 
         {{-- ── LEFT: Announcement Banner ─────────────────────── --}}
         <div class="col-12 col-lg-8">
-            <div class="card border-0 shadow-sm rounded-3 h-100" id="banner-card">
+            <div class="card dashboard-panel h-100" id="banner-card">
                 <div class="card-body p-3">
                     <div class="d-flex align-items-center justify-content-between mb-3">
                         <div>
-                            <h2 class="table-panel-title mb-0">
-                                <i class="fas fa-image fa-fw text-primary"></i>
-                                Announcement Banner
-                            </h2>
-                            <p class="fs-7 text-muted mb-0">Displayed on the resident-facing portal.</p>
+                            <p class="small text-uppercase text-muted fw-semibold mb-2">Barangay Banner</p>
+                            <h2 class="h5 mb-2">Announcement Banner</h2>
+                            <p class="text-muted fs-7 mb-0">Displayed on the resident-facing portal.</p>
                         </div>
                         @if(in_array(auth()->user()->role, ['secretary', 'chairman']))
                         <button type="button"
@@ -94,13 +93,32 @@
         {{-- ── RIGHT COLUMN ─────────────────────────────────── --}}
         <div class="col-12 col-lg-4 d-flex flex-column gap-4">
 
-            {{-- Barangay Official Staff card --}}
-            <div class="card border-0 shadow-sm rounded-3">
+            {{-- Barangay Details card --}}
+            <div class="card dashboard-panel">
                 <div class="card-body p-3">
-                    <h2 class="table-panel-title mb-3">
-                        <i class="fas fa-id-badge fa-fw text-primary"></i>
-                        Barangay Official Staff
-                    </h2>
+                    <p class="small text-uppercase text-muted fw-semibold mb-2">Barangay Details</p>
+                    <h2 class="h5 mb-2">Barangay 409, Manila City</h2>
+                    <p class="text-muted fs-7 mb-3">Central admin panel for residents, certificate requests, reports, logs, and account access.</p>
+                    <div class="d-grid gap-2">
+                        <a href="{{ route('admin.residents.index') }}" class="btn btn-outline-primary btn-sm">
+                            <i class="fas fa-users fa-fw me-1"></i> Manage Residents
+                        </a>
+                        <a href="{{ route('admin.certificates.index') }}" class="btn btn-outline-success btn-sm">
+                            <i class="fas fa-file-signature fa-fw me-1"></i> Issue Certificates
+                        </a>
+                        <a href="{{ route('admin.accounts.index') }}" class="btn btn-outline-secondary btn-sm">
+                            <i class="fas fa-user-shield fa-fw me-1"></i> Admin Accounts
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            {{-- Barangay Official Staff card --}}
+            <div class="card dashboard-panel">
+                <div class="card-body p-3">
+                    <p class="small text-uppercase text-muted fw-semibold mb-2">Barangay Staff</p>
+                    <h2 class="h5 mb-2">Official Staff</h2>
+                    <p class="text-muted fs-7 mb-3">Barangay officers and elected SK officials.</p>
 
                     @if($officials->isEmpty())
                         <p class="text-muted small mb-0">No officials on record.
@@ -134,26 +152,6 @@
                 </div>
             </div>
 
-            {{-- Barangay Details card (unchanged) --}}
-            <div class="card border-0 shadow-sm rounded-3">
-                <div class="card-body p-3">
-                    <p class="small text-uppercase text-muted fw-semibold mb-2">Barangay Details</p>
-                    <h2 class="h5 mb-2">Barangay 409, Manila City</h2>
-                    <p class="text-muted fs-7 mb-3">Central admin panel for residents, certificate requests, reports, logs, and account access.</p>
-                    <div class="d-grid gap-2">
-                        <a href="{{ route('admin.residents.index') }}" class="btn btn-outline-primary btn-sm">
-                            <i class="fas fa-users fa-fw me-1"></i> Manage Residents
-                        </a>
-                        <a href="{{ route('admin.certificates.index') }}" class="btn btn-outline-success btn-sm">
-                            <i class="fas fa-file-signature fa-fw me-1"></i> Issue Certificates
-                        </a>
-                        <a href="{{ route('admin.accounts.index') }}" class="btn btn-outline-secondary btn-sm">
-                            <i class="fas fa-user-shield fa-fw me-1"></i> Admin Accounts
-                        </a>
-                    </div>
-                </div>
-            </div>
-
         </div>{{-- /right col --}}
     </div>
 
@@ -164,13 +162,14 @@
 
         {{-- ── LEFT: Event Timeline ─────────────────────────── --}}
         <div class="col-12 col-lg-5">
-            <div class="card border-0 shadow-sm rounded-3 h-100">
+            <div class="card dashboard-panel h-100">
                 <div class="card-body p-3">
-                    <div class="d-flex align-items-center justify-content-between mb-3">
-                        <h2 class="table-panel-title mb-0">
-                            <i class="fas fa-clock-rotate-left fa-fw text-primary"></i>
-                            Upcoming Events &amp; Activities
-                        </h2>
+                    <div class="d-flex align-items-start justify-content-between gap-3 mb-3">
+                        <div>
+                            <p class="small text-uppercase text-muted fw-semibold mb-2">Barangay Updates</p>
+                            <h2 class="h5 mb-2">Upcoming Events &amp; Activities</h2>
+                            <p class="text-muted fs-7 mb-0">Official announcements scheduled on the calendar.</p>
+                        </div>
                         <a href="{{ route('admin.announcements.index') }}" class="btn btn-sm btn-outline-primary">
                             <i class="fas fa-bullhorn fa-fw me-1"></i> Manage
                         </a>
@@ -206,12 +205,11 @@
 
         {{-- ── RIGHT: Activity Calendar ─────────────────────── --}}
         <div class="col-12 col-lg-7">
-            <div class="card border-0 shadow-sm rounded-3 h-100">
+            <div class="card dashboard-panel h-100">
                 <div class="card-body p-3">
-                    <h2 class="table-panel-title mb-3">
-                        <i class="fas fa-calendar-days fa-fw text-primary"></i>
-                        Activity Calendar
-                    </h2>
+                    <p class="small text-uppercase text-muted fw-semibold mb-2">Barangay Calendar</p>
+                    <h2 class="h5 mb-2">Activity Calendar</h2>
+                    <p class="text-muted fs-7 mb-3">Monthly schedule of barangay events and activities.</p>
                     <div id="dashboard-calendar"></div>
                 </div>
             </div>

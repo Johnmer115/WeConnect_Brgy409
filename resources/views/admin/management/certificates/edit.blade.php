@@ -43,7 +43,7 @@
                     <input type="text" class="cert-input @error('last_name') is-invalid @enderror"
                            id="f-last-name" name="last_name"
                            value="{{ old('last_name', $certificate->last_name) }}"
-                           required placeholder="Last Name">
+                           required placeholder="e.g. Dela Cruz">
                     @error('last_name')<div class="cert-error">{{ $message }}</div>@enderror
                 </div>
                 <div class="cert-field">
@@ -51,7 +51,7 @@
                     <input type="text" class="cert-input @error('first_name') is-invalid @enderror"
                            id="f-first-name" name="first_name"
                            value="{{ old('first_name', $certificate->first_name) }}"
-                           required placeholder="First Name">
+                           required placeholder="e.g. Juan">
                     @error('first_name')<div class="cert-error">{{ $message }}</div>@enderror
                 </div>
                 <div class="cert-field">
@@ -59,14 +59,14 @@
                     <input type="text" class="cert-input"
                            id="f-middle-name" name="middle_name"
                            value="{{ old('middle_name', $certificate->middle_name) }}"
-                           placeholder="Middle Name">
+                           placeholder="e.g. Santos">
                 </div>
                 <div class="cert-field">
                     <label class="cert-label" for="f-suffix">Suffix</label>
                     <input type="text" class="cert-input"
                            id="f-suffix" name="suffix"
                            value="{{ old('suffix', $certificate->suffix) }}"
-                           placeholder="Jr., Sr., III…">
+                           placeholder="e.g. Jr.">
                 </div>
             </div>
             <div class="cert-form-row cert-form-row-4">
@@ -80,7 +80,7 @@
                     <label class="cert-label" for="f-age">Age</label>
                     <input type="number" class="cert-input"
                            id="f-age" name="age" min="0" max="150"
-                           value="{{ old('age', $certificate->age) }}" placeholder="Age">
+                           value="{{ old('age', $certificate->age) }}" placeholder="e.g. 25">
                 </div>
                 <div class="cert-field">
                     <label class="cert-label" for="f-gender">Gender</label>
@@ -95,7 +95,7 @@
                     <input type="text" class="cert-input"
                            id="f-religion" name="religion"
                            value="{{ old('religion', $certificate->religion) }}"
-                           placeholder="Religion">
+                           placeholder="e.g. Roman Catholic">
                 </div>
             </div>
         </div>
@@ -107,37 +107,37 @@
             <h2 class="cert-form-section-title">
                 <i class="fas fa-map-marker-alt fa-fw"></i> Home Address Information
             </h2>
-            <div class="cert-form-row cert-form-row-2">
+            <div class="cert-form-row">
                 <div class="cert-field">
                     <label class="cert-label" for="f-address">Home Address <span class="cert-required">*</span></label>
                     <input type="text" class="cert-input @error('address') is-invalid @enderror"
                            id="f-address" name="address"
                            value="{{ old('address', $certificate->address) }}"
-                           required placeholder="Street / House No.">
+                           required placeholder="e.g. 1234 Oroquieta Street">
                     @error('address')<div class="cert-error">{{ $message }}</div>@enderror
                 </div>
+            </div>
+            <div class="cert-form-row cert-form-row-3">
                 <div class="cert-field">
                     <label class="cert-label" for="f-purok">Purok</label>
                     <input type="text" class="cert-input"
                            id="f-purok" name="purok"
                            value="{{ old('purok', $certificate->purok) }}"
-                           placeholder="Purok name / number">
+                           placeholder="e.g. Purok 1">
                 </div>
-            </div>
-            <div class="cert-form-row cert-form-row-2">
                 <div class="cert-field">
                     <label class="cert-label" for="f-barangay-city">Barangay / City</label>
                     <input type="text" class="cert-input"
                            id="f-barangay-city" name="barangay_city"
                            value="{{ old('barangay_city', $certificate->barangay_city ?? 'Barangay 409, Manila City') }}"
-                           placeholder="Barangay / City">
+                           placeholder="e.g. Barangay 409, Manila City">
                 </div>
                 <div class="cert-field">
                     <label class="cert-label" for="f-country">Country</label>
                     <input type="text" class="cert-input"
                            id="f-country" name="country"
                            value="{{ old('country', $certificate->country ?? 'Philippines') }}"
-                           placeholder="Country">
+                           placeholder="e.g. Philippines">
                 </div>
             </div>
         </div>
@@ -155,7 +155,7 @@
                     <input type="email" class="cert-input @error('email') is-invalid @enderror"
                            id="f-email" name="email"
                            value="{{ old('email', $certificate->email) }}"
-                           placeholder="email@example.com">
+                           placeholder="e.g. name@example.com">
                     @error('email')<div class="cert-error">{{ $message }}</div>@enderror
                 </div>
                 <div class="cert-field">
@@ -163,14 +163,14 @@
                     <input type="text" class="cert-input"
                            id="f-telephone" name="telephone"
                            value="{{ old('telephone', $certificate->telephone) }}"
-                           placeholder="(02) 8xxx-xxxx">
+                           placeholder="e.g. (02) 8123-4567">
                 </div>
                 <div class="cert-field">
                     <label class="cert-label" for="f-mobile">Mobile Number</label>
                     <input type="text" class="cert-input"
                            id="f-mobile" name="mobile"
                            value="{{ old('mobile', $certificate->mobile) }}"
-                           placeholder="09xx-xxx-xxxx">
+                           placeholder="e.g. 09123456789">
                 </div>
             </div>
         </div>

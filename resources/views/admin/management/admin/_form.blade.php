@@ -15,18 +15,18 @@
         @else
             <div class="col-12 col-md-4">
                 <label for="name" class="form-label">Full Name <span class="text-danger">*</span></label>
-                <input type="text" id="name" name="name" value="{{ old('name', $account->name) }}" class="form-control @error('name') is-invalid @enderror" placeholder="Juan Dela Cruz">
+                <input type="text" id="name" name="name" value="{{ old('name', $account->name) }}" class="form-control @error('name') is-invalid @enderror" placeholder="e.g. Juan Dela Cruz">
                 @error('name') <div class="invalid-feedback">{{ $message }}</div> @enderror
             </div>
             <div class="col-12 col-md-4">
                 <label for="username" class="form-label">Username <span class="text-danger">*</span></label>
-                <input type="text" id="username" name="username" value="{{ old('username', $account->username) }}" class="form-control @error('username') is-invalid @enderror" placeholder="username">
+                <input type="text" id="username" name="username" value="{{ old('username', $account->username) }}" class="form-control @error('username') is-invalid @enderror" placeholder="e.g. juandelacruz">
                 @error('username') <div class="invalid-feedback">{{ $message }}</div> @enderror
             </div>
         @endif
         <div class="col-12 col-md-4">
             <label for="email" class="form-label">Email</label>
-            <input type="email" id="email" name="email" value="{{ old('email', $account->email) }}" class="form-control @error('email') is-invalid @enderror" placeholder="name@example.com">
+            <input type="email" id="email" name="email" value="{{ old('email', $account->email) }}" class="form-control @error('email') is-invalid @enderror" placeholder="e.g. name@example.com">
             @error('email') <div class="invalid-feedback">{{ $message }}</div> @enderror
         </div>
         @unless ($account->exists)

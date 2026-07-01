@@ -75,7 +75,7 @@
         </header>
 
         {{-- ── Flash Messages ── --}}
-        <div class="px-3 pt-3">
+        <div class="@yield('flash-wrapper-class', 'px-3 pt-3')">
             @if (session('success'))
                 <div class="alert alert-success alert-dismissible fade show small py-2" role="alert">
                     <i class="fas fa-check-circle me-1"></i> {{ session('success') }}

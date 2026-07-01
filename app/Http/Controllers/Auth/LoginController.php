@@ -49,6 +49,8 @@ class LoginController extends Controller
             return back()->withErrors(['account' => 'This account has been deactivated.']);
         }
 
+        \App\Models\ActivityLog::log('login', 'Auth', "User logged into the system.");
+
         return $user->isResident()
             ? redirect()->intended('/home')
             : redirect()->intended('/admin/dashboard');
@@ -56,6 +58,11 @@ class LoginController extends Controller
 
     public function logout(Request $request)
     {
+        $user = Auth::user();
+        if ($user) {
+            \App\Models\ActivityLog::log('logout', 'Auth', "User logged out.");
+        }
+
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();

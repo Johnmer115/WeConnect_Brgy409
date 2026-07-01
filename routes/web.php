@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AccountController;
+use App\Http\Controllers\Admin\ActivityLogController;
 use App\Http\Controllers\Admin\AnnouncementController as AdminAnnouncementController;
 use App\Http\Controllers\Admin\CertificateController;
 use App\Http\Controllers\Admin\DashboardController;
@@ -50,6 +51,7 @@ Route::middleware('auth')->group(function () {
             Route::post('/certificates', [CertificateController::class, 'store'])->name('certificates.store');
             Route::get('/certificates/{certificate}/edit', [CertificateController::class, 'edit'])->name('certificates.edit');
             Route::put('/certificates/{certificate}', [CertificateController::class, 'update'])->name('certificates.update');
+            Route::delete('/certificates/{certificate}', [CertificateController::class, 'destroy'])->name('certificates.destroy');
             Route::patch('/certificates/{certificate}/status', [CertificateController::class, 'updateStatus'])->name('certificates.updateStatus');
             Route::get('/certificates/{certificate}/print', [CertificateController::class, 'print'])->name('certificates.print');
             Route::get('/accounts', [AccountController::class, 'index'])->name('accounts.index');
@@ -60,5 +62,6 @@ Route::middleware('auth')->group(function () {
             Route::delete('/accounts/{account}', [AccountController::class, 'destroy'])->name('accounts.destroy');
             Route::post('/residents/{resident}/verify', [ResidentController::class, 'verify'])->name('residents.verify');
             Route::resource('residents', ResidentController::class)->only(['index', 'create', 'store', 'show', 'edit', 'update', 'destroy']);
+            Route::get('/activity-logs', [ActivityLogController::class, 'index'])->name('activity.index');
         });
 });

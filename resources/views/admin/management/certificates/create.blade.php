@@ -29,7 +29,7 @@
                 <input type="text"
                        id="resident-search"
                        class="cert-lookup-input"
-                       placeholder="Type resident name…"
+                       placeholder="Click to select or search resident record…"
                        autocomplete="off"
                        spellcheck="false"
                        role="combobox"
@@ -43,6 +43,9 @@
                     <button type="button" id="lookup-clear" title="Clear selection" aria-label="Clear">
                         <i class="fas fa-times"></i>
                     </button>
+                </div>
+                <div class="cert-combobox-icon cert-combobox-chevron" id="lookup-chevron-icon">
+                    <i class="fas fa-chevron-down text-muted" style="font-size: 0.8rem; cursor: pointer;"></i>
                 </div>
                 <ul class="cert-dropdown" id="resident-dropdown" role="listbox" hidden></ul>
             </div>
@@ -75,27 +78,27 @@
                     <label class="cert-label" for="f-last-name">Last Name <span class="cert-required">*</span></label>
                     <input type="text" class="cert-input @error('last_name') is-invalid @enderror"
                            id="f-last-name" name="last_name"
-                           value="{{ old('last_name') }}" required placeholder="Last Name">
+                           value="{{ old('last_name') }}" required placeholder="e.g. Dela Cruz">
                     @error('last_name')<div class="cert-error">{{ $message }}</div>@enderror
                 </div>
                 <div class="cert-field">
                     <label class="cert-label" for="f-first-name">First Name <span class="cert-required">*</span></label>
                     <input type="text" class="cert-input @error('first_name') is-invalid @enderror"
                            id="f-first-name" name="first_name"
-                           value="{{ old('first_name') }}" required placeholder="First Name">
+                           value="{{ old('first_name') }}" required placeholder="e.g. Juan">
                     @error('first_name')<div class="cert-error">{{ $message }}</div>@enderror
                 </div>
                 <div class="cert-field">
                     <label class="cert-label" for="f-middle-name">Middle Name</label>
                     <input type="text" class="cert-input"
                            id="f-middle-name" name="middle_name"
-                           value="{{ old('middle_name') }}" placeholder="Middle Name">
+                           value="{{ old('middle_name') }}" placeholder="e.g. Santos">
                 </div>
                 <div class="cert-field">
                     <label class="cert-label" for="f-suffix">Suffix</label>
                     <input type="text" class="cert-input"
                            id="f-suffix" name="suffix"
-                           value="{{ old('suffix') }}" placeholder="Jr., Sr., III…">
+                           value="{{ old('suffix') }}" placeholder="e.g. Jr.">
                 </div>
             </div>
             <div class="cert-form-row cert-form-row-4">
@@ -109,7 +112,7 @@
                     <label class="cert-label" for="f-age">Age</label>
                     <input type="number" class="cert-input"
                            id="f-age" name="age" min="0" max="150"
-                           value="{{ old('age') }}" placeholder="Age">
+                           value="{{ old('age') }}" placeholder="e.g. 25">
                 </div>
                 <div class="cert-field">
                     <label class="cert-label" for="f-gender">Gender</label>
@@ -123,7 +126,7 @@
                     <label class="cert-label" for="f-religion">Religion</label>
                     <input type="text" class="cert-input"
                            id="f-religion" name="religion"
-                           value="{{ old('religion') }}" placeholder="Religion">
+                           value="{{ old('religion') }}" placeholder="e.g. Roman Catholic">
                 </div>
             </div>
         </div>
@@ -135,34 +138,34 @@
             <h2 class="cert-form-section-title">
                 <i class="fas fa-map-marker-alt fa-fw"></i> Home Address Information
             </h2>
-            <div class="cert-form-row cert-form-row-2">
+            <div class="cert-form-row">
                 <div class="cert-field">
                     <label class="cert-label" for="f-address">Home Address <span class="cert-required">*</span></label>
                     <input type="text" class="cert-input @error('address') is-invalid @enderror"
                            id="f-address" name="address"
-                           value="{{ old('address') }}" required placeholder="Street / House No.">
+                           value="{{ old('address') }}" required placeholder="e.g. 1234 Oroquieta Street">
                     @error('address')<div class="cert-error">{{ $message }}</div>@enderror
                 </div>
+            </div>
+            <div class="cert-form-row cert-form-row-3">
                 <div class="cert-field">
                     <label class="cert-label" for="f-purok">Purok</label>
                     <input type="text" class="cert-input"
                            id="f-purok" name="purok"
-                           value="{{ old('purok') }}" placeholder="Purok name / number">
+                           value="{{ old('purok') }}" placeholder="e.g. Purok 1">
                 </div>
-            </div>
-            <div class="cert-form-row cert-form-row-2">
                 <div class="cert-field">
                     <label class="cert-label" for="f-barangay-city">Barangay / City</label>
                     <input type="text" class="cert-input"
                            id="f-barangay-city" name="barangay_city"
                            value="{{ old('barangay_city', 'Barangay 409, Manila City') }}"
-                           placeholder="Barangay / City">
+                           placeholder="e.g. Barangay 409, Manila City">
                 </div>
                 <div class="cert-field">
                     <label class="cert-label" for="f-country">Country</label>
                     <input type="text" class="cert-input"
                            id="f-country" name="country"
-                           value="{{ old('country', 'Philippines') }}" placeholder="Country">
+                           value="{{ old('country', 'Philippines') }}" placeholder="e.g. Philippines">
                 </div>
             </div>
         </div>
@@ -174,25 +177,25 @@
             <h2 class="cert-form-section-title">
                 <i class="fas fa-phone fa-fw"></i> Contact Information
             </h2>
-            <div class="cert-form-row cert-form-row-2">
+            <div class="cert-form-row cert-form-row-3">
                 <div class="cert-field">
                     <label class="cert-label" for="f-email">Email Address</label>
                     <input type="email" class="cert-input @error('email') is-invalid @enderror"
                            id="f-email" name="email"
-                           value="{{ old('email') }}" placeholder="email@example.com">
+                           value="{{ old('email') }}" placeholder="e.g. name@example.com">
                     @error('email')<div class="cert-error">{{ $message }}</div>@enderror
                 </div>
                 <div class="cert-field">
                     <label class="cert-label" for="f-telephone">Telephone Number</label>
                     <input type="text" class="cert-input"
                            id="f-telephone" name="telephone"
-                           value="{{ old('telephone') }}" placeholder="(02) 8xxx-xxxx">
+                           value="{{ old('telephone') }}" placeholder="e.g. (02) 8123-4567">
                 </div>
                 <div class="cert-field">
                     <label class="cert-label" for="f-mobile">Mobile Number</label>
                     <input type="text" class="cert-input"
                            id="f-mobile" name="mobile"
-                           value="{{ old('mobile') }}" placeholder="09xx-xxx-xxxx">
+                           value="{{ old('mobile') }}" placeholder="e.g. 09123456789">
                 </div>
             </div>
         </div>
@@ -248,6 +251,7 @@
     var spinner       = document.getElementById('lookup-spinner');
     var dropdown      = document.getElementById('resident-dropdown');
     var clearIcon     = document.getElementById('lookup-clear-icon');
+    var chevronIcon   = document.getElementById('lookup-chevron-icon');
     var clearBtn      = document.getElementById('lookup-clear');
     var selectedBox   = document.getElementById('lookup-selected');
     var selectedName  = document.getElementById('lookup-selected-name');
@@ -275,6 +279,33 @@
     var debounceTimer = null;
     var isSelected = false;
 
+    // ── Focus & Click handlers for instant dropdown ──────────────
+    searchInput.addEventListener('focus', function () {
+        if (isSelected) return;
+        doSearch(this.value.trim());
+    });
+
+    searchInput.addEventListener('click', function () {
+        if (isSelected) return;
+        if (dropdown.hidden) {
+            doSearch(this.value.trim());
+        }
+    });
+
+    // ── Chevron Click handler ────────────────────────────────────
+    if (chevronIcon) {
+        chevronIcon.addEventListener('click', function (e) {
+            e.stopPropagation();
+            if (isSelected) return;
+            searchInput.focus();
+            if (dropdown.hidden) {
+                doSearch(searchInput.value.trim());
+            } else {
+                hideDropdown();
+            }
+        });
+    }
+
     // ── Typing handler ───────────────────────────────────────────
     searchInput.addEventListener('input', function () {
         var q = this.value.trim();
@@ -285,23 +316,26 @@
         clearTimeout(debounceTimer);
         hideDropdown();
 
-        if (q.length < 2) return;
-
         debounceTimer = setTimeout(function () { doSearch(q); }, 300);
     });
 
     // ── AJAX search ──────────────────────────────────────────────
     function doSearch(q) {
         spinner.hidden = false;
+        if (chevronIcon) chevronIcon.hidden = true;
         fetch(LOOKUP_URL + '?q=' + encodeURIComponent(q), {
             headers: { 'Accept': 'application/json' }
         })
         .then(function (r) { return r.json(); })
         .then(function (data) {
             spinner.hidden = true;
+            if (!isSelected && chevronIcon) chevronIcon.hidden = false;
             renderDropdown(data);
         })
-        .catch(function () { spinner.hidden = true; });
+        .catch(function () {
+            spinner.hidden = true;
+            if (!isSelected && chevronIcon) chevronIcon.hidden = false;
+        });
     }
 
     // ── Render dropdown ──────────────────────────────────────────
@@ -354,6 +388,7 @@
         selectedName.textContent = r.full_name;
         selectedBox.hidden = false;
         clearIcon.hidden = false;
+        if (chevronIcon) chevronIcon.hidden = true;
 
         hideDropdown();
     }
@@ -370,6 +405,7 @@
 
         selectedBox.hidden = true;
         clearIcon.hidden = true;
+        if (chevronIcon) chevronIcon.hidden = false;
 
         if (clearInput !== false) {
             searchInput.value = '';

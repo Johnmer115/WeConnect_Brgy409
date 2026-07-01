@@ -68,6 +68,8 @@ class AccountController extends Controller
                 'status' => 'active',
             ]);
 
+            \App\Models\ActivityLog::log('create', 'Accounts', "Registered a new admin account: " . $validated['name']);
+
             return redirect()
                 ->route('admin.accounts.index')
                 ->with('success', 'Admin account registered successfully.');
@@ -105,6 +107,8 @@ class AccountController extends Controller
             $resident->forceFill(['user_id' => $user->id])->save();
         });
 
+        \App\Models\ActivityLog::log('create', 'Accounts', "Registered a new resident user account: " . $resident->full_name);
+
         return redirect()
             ->route('admin.accounts.index')
             ->with('success', 'Resident account registered successfully.');
@@ -137,6 +141,8 @@ class AccountController extends Controller
 
         $account->update($payload);
 
+        \App\Models\ActivityLog::log('update', 'Accounts', "Updated account details for: " . $account->name);
+
         return redirect()
             ->route('admin.accounts.index')
             ->with('success', 'Account updated successfully.');
@@ -148,6 +154,8 @@ class AccountController extends Controller
             return back()->with('error', 'You cannot delete the account you are currently using.');
         }
 
+        $accountName = $account->name;
+
         DB::transaction(function () use ($account) {
             if ($account->resident) {
                 $account->resident->forceFill(['user_id' => null])->save();
@@ -155,6 +163,8 @@ class AccountController extends Controller
 
             $account->delete();
         });
+
+        \App\Models\ActivityLog::log('delete', 'Accounts', "Deleted user login account: " . $accountName);
 
         return back()->with('success', 'Account deleted successfully.');
     }

@@ -48,6 +48,8 @@ class AnnouncementController extends Controller
 
         Announcement::create($validated);
 
+        \App\Models\ActivityLog::log('create', 'Announcements', "Created announcement: " . $validated['headline']);
+
         return redirect()
             ->route('admin.announcements.index')
             ->with('success', 'Announcement created successfully.');
@@ -76,6 +78,8 @@ class AnnouncementController extends Controller
 
         $announcement->update($validated);
 
+        \App\Models\ActivityLog::log('update', 'Announcements', "Updated announcement: " . $announcement->headline);
+
         return redirect()
             ->route('admin.announcements.index')
             ->with('success', 'Announcement updated successfully.');
@@ -83,11 +87,15 @@ class AnnouncementController extends Controller
 
     public function destroy(Announcement $announcement)
     {
+        $headline = $announcement->headline;
+
         if ($announcement->caption_path) {
             Storage::disk('public')->delete($announcement->caption_path);
         }
 
         $announcement->delete();
+
+        \App\Models\ActivityLog::log('delete', 'Announcements', "Deleted announcement: " . $headline);
 
         return redirect()
             ->route('admin.announcements.index')

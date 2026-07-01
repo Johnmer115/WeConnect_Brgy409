@@ -49,6 +49,8 @@ class ResidentController extends Controller
 
         $resident = Resident::create($validated);
 
+        \App\Models\ActivityLog::log('create', 'Residents', "Added resident record: " . $resident->full_name);
+
         return redirect()
             ->route('admin.residents.index', $resident) 
             ->with('success', 'Resident registered successfully.');
@@ -73,6 +75,8 @@ class ResidentController extends Controller
     {
         $resident->update($this->validatedResident($request));
 
+        \App\Models\ActivityLog::log('update', 'Residents', "Updated resident record: " . $resident->full_name);
+
         return redirect()
             ->route('admin.residents.index', $resident)
             ->with('success', 'Resident updated successfully.');
@@ -80,6 +84,8 @@ class ResidentController extends Controller
 
     public function destroy(Resident $resident)
     {
+        $residentName = $resident->full_name;
+
         DB::transaction(function () use ($resident) {
             if ($resident->user) {
                 $resident->user->delete();
@@ -87,6 +93,8 @@ class ResidentController extends Controller
 
             $resident->delete();
         });
+
+        \App\Models\ActivityLog::log('delete', 'Residents', "Deleted resident record: " . $residentName);
 
         return redirect()
             ->route('admin.residents.index')
@@ -107,6 +115,8 @@ class ResidentController extends Controller
                 $resident->user->forceFill(['status' => 'active'])->save();
             }
         });
+
+        \App\Models\ActivityLog::log('update', 'Residents', "Verified resident registration: " . $resident->full_name);
 
         return back()->with('success', 'Resident registration accepted.');
     }

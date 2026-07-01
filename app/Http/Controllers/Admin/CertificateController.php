@@ -14,10 +14,20 @@ class CertificateController extends Controller
 
     public function index(Request $request)
     {
+        $search = trim((string) $request->query('search', ''));
         $type   = $request->query('type', '');
         $status = $request->query('status', '');  // '' = default (pending+ongoing)
 
         $query = Certificate::query()->latest();
+
+        if ($search !== '') {
+            $query->where(function ($q) use ($search) {
+                $q->where('first_name', 'like', "%{$search}%")
+                  ->orWhere('last_name', 'like', "%{$search}%")
+                  ->orWhere('middle_name', 'like', "%{$search}%")
+                  ->orWhere('purpose', 'like', "%{$search}%");
+            });
+        }
 
         if ($type && array_key_exists($type, Certificate::TYPES)) {
             $query->where('certificate_type', $type);
@@ -36,6 +46,7 @@ class CertificateController extends Controller
             'statuses'       => Certificate::STATUSES,
             'selectedType'   => $type,
             'selectedStatus' => $status,
+            'search'         => $search,
         ]);
     }
 
@@ -76,7 +87,9 @@ class CertificateController extends Controller
 
         $validated['status'] = 'pending';
 
-        Certificate::create($validated);
+        $certificate = Certificate::create($validated);
+
+        \App\Models\ActivityLog::log('create', 'Certificates', "Issued new " . $certificate->type_label . " for " . $certificate->full_name);
 
         return redirect()->route('admin.certificates.index')
             ->with('success', 'Certificate issued successfully.');
@@ -121,11 +134,26 @@ class CertificateController extends Controller
 
         $certificate->update($validated);
 
+        \App\Models\ActivityLog::log('update', 'Certificates', "Updated certificate details for " . $certificate->full_name);
+
         return redirect()->route('admin.certificates.index')
             ->with('success', 'Certificate updated successfully.');
     }
 
     // ── Update Status (AJAX) ──────────────────────────────────────
+
+    public function destroy(Certificate $certificate)
+    {
+        $certName = $certificate->full_name;
+        $certTypeLabel = $certificate->type_label;
+
+        $certificate->delete();
+
+        \App\Models\ActivityLog::log('delete', 'Certificates', "Deleted certificate record (" . $certTypeLabel . ") of " . $certName);
+
+        return redirect()->route('admin.certificates.index')
+            ->with('success', 'Certificate deleted successfully.');
+    }
 
     public function updateStatus(Request $request, Certificate $certificate)
     {
@@ -142,6 +170,8 @@ class CertificateController extends Controller
         }
 
         $certificate->update($data);
+
+        \App\Models\ActivityLog::log('update', 'Certificates', "Updated status of certificate (" . $certificate->type_label . ") for " . $certificate->full_name . " to " . $certificate->status_label);
 
         return response()->json([
             'success'      => true,
@@ -165,17 +195,19 @@ class CertificateController extends Controller
     {
         $search = trim((string) $request->query('q', ''));
 
-        if (strlen($search) < 2) {
-            return response()->json([]);
-        }
+        $query = Resident::with('purok');
 
-        $residents = Resident::with('purok')
-            ->where(function ($query) use ($search) {
-                $query->where('first_name', 'like', "%{$search}%")
+        if ($search !== '') {
+            $query->where(function ($q) use ($search) {
+                $q->where('first_name', 'like', "%{$search}%")
                     ->orWhere('last_name', 'like', "%{$search}%")
                     ->orWhere('middle_name', 'like', "%{$search}%");
-            })
-            ->limit(10)
+            });
+        } else {
+            $query->latest();
+        }
+
+        $residents = $query->limit(10)
             ->get()
             ->map(fn (Resident $r) => [
                 'id'           => $r->id,

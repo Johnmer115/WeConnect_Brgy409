@@ -5,17 +5,17 @@
     <div class="row g-3">
         <div class="col-12 col-md-4">
             <label for="first_name" class="form-label">First Name <span class="text-danger">*</span></label>
-            <input type="text" id="first_name" name="first_name" value="{{ old('first_name', $resident->first_name) }}" class="form-control @error('first_name') is-invalid @enderror">
+            <input type="text" id="first_name" name="first_name" value="{{ old('first_name', $resident->first_name) }}" class="form-control @error('first_name') is-invalid @enderror" placeholder="e.g. Juan">
             @error('first_name') <div class="invalid-feedback">{{ $message }}</div> @enderror
         </div>
         <div class="col-12 col-md-4">
             <label for="middle_name" class="form-label">Middle Name</label>
-            <input type="text" id="middle_name" name="middle_name" value="{{ old('middle_name', $resident->middle_name) }}" class="form-control @error('middle_name') is-invalid @enderror">
+            <input type="text" id="middle_name" name="middle_name" value="{{ old('middle_name', $resident->middle_name) }}" class="form-control @error('middle_name') is-invalid @enderror" placeholder="e.g. Santos">
             @error('middle_name') <div class="invalid-feedback">{{ $message }}</div> @enderror
         </div>
         <div class="col-12 col-md-4">
             <label for="last_name" class="form-label">Last Name <span class="text-danger">*</span></label>
-            <input type="text" id="last_name" name="last_name" value="{{ old('last_name', $resident->last_name) }}" class="form-control @error('last_name') is-invalid @enderror">
+            <input type="text" id="last_name" name="last_name" value="{{ old('last_name', $resident->last_name) }}" class="form-control @error('last_name') is-invalid @enderror" placeholder="e.g. Dela Cruz">
             @error('last_name') <div class="invalid-feedback">{{ $message }}</div> @enderror
         </div>
         <div class="col-12 col-md-3">
@@ -182,17 +182,17 @@ document.addEventListener('DOMContentLoaded', function () {
     <div class="row g-3">
         <div class="col-12 col-md-4">
             <label for="mobile_number" class="form-label">Mobile Number</label>
-            <input type="text" id="mobile_number" name="mobile_number" value="{{ old('mobile_number', $resident->mobile_number) }}" class="form-control @error('mobile_number') is-invalid @enderror">
+            <input type="text" id="mobile_number" name="mobile_number" value="{{ old('mobile_number', $resident->mobile_number) }}" class="form-control @error('mobile_number') is-invalid @enderror" placeholder="e.g. 09123456789">
             @error('mobile_number') <div class="invalid-feedback">{{ $message }}</div> @enderror
         </div>
         <div class="col-12 col-md-4">
             <label for="telephone_number" class="form-label">Telephone Number</label>
-            <input type="text" id="telephone_number" name="telephone_number" value="{{ old('telephone_number', $resident->telephone_number) }}" class="form-control @error('telephone_number') is-invalid @enderror">
+            <input type="text" id="telephone_number" name="telephone_number" value="{{ old('telephone_number', $resident->telephone_number) }}" class="form-control @error('telephone_number') is-invalid @enderror" placeholder="e.g. 8-1234">
             @error('telephone_number') <div class="invalid-feedback">{{ $message }}</div> @enderror
         </div>
         <div class="col-12 col-md-4">
             <label for="email" class="form-label">Email</label>
-            <input type="email" id="email" name="email" value="{{ old('email', $resident->email) }}" class="form-control @error('email') is-invalid @enderror">
+            <input type="email" id="email" name="email" value="{{ old('email', $resident->email) }}" class="form-control @error('email') is-invalid @enderror" placeholder="e.g. juan.delacruz@example.com">
             @error('email') <div class="invalid-feedback">{{ $message }}</div> @enderror
         </div>
         <div class="col-12 col-md-4">
@@ -207,7 +207,7 @@ document.addEventListener('DOMContentLoaded', function () {
         </div>
         <div class="col-12 col-md-8">
             <label for="home_address" class="form-label">Home Address</label>
-            <input type="text" id="home_address" name="home_address" value="{{ old('home_address', $resident->home_address) }}" class="form-control @error('home_address') is-invalid @enderror">
+            <input type="text" id="home_address" name="home_address" value="{{ old('home_address', $resident->home_address) }}" class="form-control @error('home_address') is-invalid @enderror" placeholder="e.g. 1234 Oroquieta Street">
             <div class="form-text small">Purok and Barangay 409, Manila City are added automatically.</div>
             @error('home_address') <div class="invalid-feedback">{{ $message }}</div> @enderror
         </div>
